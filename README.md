@@ -34,6 +34,28 @@ so the site makes no third-party requests at runtime.
 [30681569]: https://www.pexels.com/photo/30681569/
 [29494279]: https://www.pexels.com/photo/29494279/
 
+## Content and the admin
+
+Content lives in Supabase and is edited at `/admin`, behind Supabase Auth. The page
+reads the database on the server and caches the result for five minutes; saving in the
+admin revalidates it immediately, so there is no redeploy in the loop.
+
+Until the environment variables are set the site serves the seed content committed in
+`lib/content.ts`, and `/admin` says what is missing rather than erroring. To set it up:
+
+1. Create a Supabase project.
+2. Run the files in `supabase/migrations/` in order, in the SQL editor: the schema and
+   seed content, the `save_portfolio` function, and the `media` storage bucket.
+3. Under **Authentication → Users**, add yourself. That is the only account that can
+   sign in; there is no sign-up route.
+4. Copy `.env.example` to `.env.local` for local work, and set the same two variables
+   in Vercel's project settings. Both are the publishable values from **Settings → API**
+   — the `service_role` key is not used anywhere and should not be added.
+
+The admin edits About, Work, Hobby and Movie. Work images, movie posters and voice
+lines upload to the `media` bucket (images are downscaled in the browser first); the
+Contact channels and the hero stills stay in the repo.
+
 ## Tuning
 
 [`lib/config.ts`](lib/config.ts) holds the knobs that were tweakable in the design tool —

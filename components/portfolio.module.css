@@ -5,6 +5,21 @@
   overflow: hidden;
 }
 
+/* the crosshair replaces the pointer, but only over the portfolio itself */
+.root,
+.root button,
+.root a {
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  .root,
+  .root button,
+  .root a {
+    cursor: auto;
+  }
+}
+
 .loader {
   position: absolute;
   inset: 0;

@@ -1,11 +1,11 @@
 "use client";
 
-import { sections } from "@/lib/content";
-import { useUi } from "./ui";
+import { useSections, useUi } from "./ui";
 import s from "./rail.module.css";
 
 export default function Rail({ onOpen }: { onOpen: (key: string) => void }) {
   const { hover } = useUi();
+  const sections = useSections();
 
   return (
     <div className={s.rail}>

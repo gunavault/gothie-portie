@@ -1,7 +1,7 @@
 "use client";
 
-import { sections, type Section } from "@/lib/content";
-import { useUi } from "./ui";
+import type { Section } from "@/lib/content";
+import { useSections, useUi } from "./ui";
 import s from "./section.module.css";
 
 export function SectionHeader({
@@ -36,6 +36,7 @@ export function SectionFooter({
   raised?: boolean;
 }) {
   const { hover } = useUi();
+  const sections = useSections();
   const index = sections.findIndex((item) => item.key === section.key);
   const at = (offset: number) =>
     sections[(index + offset + sections.length) % sections.length].label;

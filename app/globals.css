@@ -29,12 +29,6 @@ body {
   overflow: hidden;
 }
 
-body,
-button,
-a {
-  cursor: none;
-}
-
 a {
   color: var(--gold);
   text-decoration: none;
@@ -150,10 +144,3 @@ a:hover {
   }
 }
 
-@media (pointer: coarse) {
-  body,
-  button,
-  a {
-    cursor: auto;
-  }
-}

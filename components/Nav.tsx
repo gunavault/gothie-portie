@@ -1,7 +1,7 @@
 "use client";
 
-import { blogUrl, sections } from "@/lib/content";
-import { useUi } from "./ui";
+import { blogUrl } from "@/lib/content";
+import { useSections, useUi } from "./ui";
 import s from "./nav.module.css";
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
 
 export default function Nav({ sound, onToggleSound, onOpen }: Props) {
   const { hover } = useUi();
+  const sections = useSections();
 
   return (
     <div className={s.nav}>

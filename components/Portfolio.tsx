@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { config, hero } from "@/lib/config";
-import { sections } from "@/lib/content";
+import type { Section } from "@/lib/content";
 import { SoundEngine, type Sfx } from "@/lib/sound";
-import { UiProvider } from "./ui";
+import { SectionsProvider, UiProvider } from "./ui";
 import Hero, { type Slice, type TitleOffset } from "./Hero";
 import Nav from "./Nav";
 import Rail from "./Rail";
@@ -24,7 +24,7 @@ const preloadImage = (src: string) =>
     img.src = src;
   });
 
-export default function Portfolio() {
+export default function Portfolio({ sections }: { sections: Section[] }) {
   const [phase, setPhase] = useState<Phase>(config.skipIntro ? "ready" : "loading");
   const [slices, setSlices] = useState<Slice[]>([{}]);
   const [titleOffsets, setTitleOffsets] = useState<TitleOffset[]>([]);
@@ -187,7 +187,7 @@ export default function Portfolio() {
       cancelled = true;
       clearInterval(timer);
     };
-  }, [sfx]);
+  }, [sfx, sections]);
 
   const closeSection = useCallback(() => {
     sfx("close");
@@ -270,64 +270,66 @@ export default function Portfolio() {
 
   return (
     <UiProvider value={ui}>
-      <div className={s.root} onMouseMove={onMove} onMouseDown={onShoot}>
-        <Hero
-          slices={slices}
-          scanning={phase === "ready"}
-          chrome={chrome}
-          titleVisible={phase === "title" || phase === "ready"}
-          glitching={glitching}
-          titleOffsets={titleOffsets}
-        />
-
-        {chrome && (
-          <Nav
-            sound={sound}
-            onToggleSound={() => setSoundOn(!sound)}
-            onOpen={openSection}
+      <SectionsProvider value={sections}>
+        <div className={s.root} onMouseMove={onMove} onMouseDown={onShoot}>
+          <Hero
+            slices={slices}
+            scanning={phase === "ready"}
+            chrome={chrome}
+            titleVisible={phase === "title" || phase === "ready"}
+            glitching={glitching}
+            titleOffsets={titleOffsets}
           />
-        )}
 
-        {chrome && <Rail onOpen={openSection} />}
+          {chrome && (
+            <Nav
+              sound={sound}
+              onToggleSound={() => setSoundOn(!sound)}
+              onOpen={openSection}
+            />
+          )}
 
-        {open && (
-          <Takeover
-            section={open}
-            expanded={expanded}
-            poster={poster}
-            voicePlaying={voicePlaying}
-            onClose={closeSection}
-            onStep={step}
-            onExpand={(index) => {
-              sfx("detail");
-              setExpanded(index);
-            }}
-            onCollapse={() => {
-              sfx("close");
-              setExpanded(null);
-            }}
-            onShowPoster={(index, voice) => {
-              sfx("detail");
-              showPoster(index, voice);
-            }}
-            onStepPoster={(index, voice) => {
-              sfx("tick");
-              showPoster(index, voice);
-            }}
-            onClosePoster={closePoster}
-            onReplayVoice={playVoice}
-          />
-        )}
+          {chrome && <Rail onOpen={openSection} />}
 
-        {phase === "loading" && <div className={s.loader} />}
+          {open && (
+            <Takeover
+              section={open}
+              expanded={expanded}
+              poster={poster}
+              voicePlaying={voicePlaying}
+              onClose={closeSection}
+              onStep={step}
+              onExpand={(index) => {
+                sfx("detail");
+                setExpanded(index);
+              }}
+              onCollapse={() => {
+                sfx("close");
+                setExpanded(null);
+              }}
+              onShowPoster={(index, voice) => {
+                sfx("detail");
+                showPoster(index, voice);
+              }}
+              onStepPoster={(index, voice) => {
+                sfx("tick");
+                showPoster(index, voice);
+              }}
+              onClosePoster={closePoster}
+              onReplayVoice={playVoice}
+            />
+          )}
 
-        {shots.map((shot) => (
-          <div key={shot.id} className={s.shot} style={{ left: shot.x, top: shot.y }} />
-        ))}
-        {flash && <div className={s.flash} />}
+          {phase === "loading" && <div className={s.loader} />}
 
-        <Cursor ref={cursorRef} hot={hot} />
-      </div>
+          {shots.map((shot) => (
+            <div key={shot.id} className={s.shot} style={{ left: shot.x, top: shot.y }} />
+          ))}
+          {flash && <div className={s.flash} />}
+
+          <Cursor ref={cursorRef} hot={hot} />
+        </div>
+      </SectionsProvider>
     </UiProvider>
   );
 }
