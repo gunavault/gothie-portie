@@ -23,3 +23,14 @@ The design medium is **HTML/CSS/JS** — these are prototypes, not production co
 - `README.md` — this file
 - `chats/` — conversation transcripts (read these!)
 - `project/` — the `Portfolio Website Loading Animation` project files (HTML prototypes, assets, components)
+
+---
+
+**Note:** the design has since been implemented (see the repository README). The bundle's
+`assets/`, `frames/`, `uploads/` and `media/` folders were removed once the site was
+built — the site's own copies live in `public/media/`. The prototype below therefore
+no longer renders standalone. To get the originals back:
+
+```bash
+git checkout 3d47d07 -- project/
+```

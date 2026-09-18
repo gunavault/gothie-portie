@@ -7,7 +7,6 @@
     "prebuild": "node scripts/fetch-media.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "fetch:media": "node scripts/fetch-media.mjs"
   },
   "dependencies": {

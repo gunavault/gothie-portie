@@ -47,5 +47,5 @@ app/          layout, globals (keyframes + color tokens), page
 components/   Portfolio (intro state machine, sound, cursor) + section views
 lib/          config, content, Web Audio sound engine
 public/media/ images and voice lines
-project/      the original Claude Design prototype and chat transcripts
+project/      the original Claude Design prototype (assets stripped — see HANDOFF.md)
 ```
