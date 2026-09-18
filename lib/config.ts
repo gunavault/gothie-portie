@@ -20,7 +20,8 @@ export type OpenSound =
 export const hero = {
   main: {
     img: "/media/hero-main.jpg",
-    pos: "center 30%",
+    // portrait source: pulled up so the spotlight beam stays above the figure
+    pos: "center 12%",
     filter: "saturate(.6) contrast(1.1) brightness(.85)",
   },
   /** Flickers through the intro's glitch slices before the hero settles. */
