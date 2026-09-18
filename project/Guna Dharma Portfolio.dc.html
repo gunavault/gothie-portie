@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#000;color:#e9eef3;font-family:'Space Mono',ui-monospace,monospace;overflow:hidden}
+*{box-sizing:border-box}
+body,button,a{cursor:none}
+a{color:#f0c987;text-decoration:none}a:hover{color:#eaf6ff}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shoot{0%{transform:translate(-50%,-50%) scale(.3);opacity:1;border-width:3px}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0;border-width:1px}}
+@keyframes flash{0%{opacity:.55}100%{opacity:0}}
+@keyframes scan{from{transform:translateY(-100%)}to{transform:translateY(100vh)}}
+@keyframes slideL{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes drift{from{transform:scale(1.04) translate(-1.5%,0)}to{transform:scale(1.1) translate(1.5%,-1%)}}
+@keyframes dossier{0%{opacity:0;transform:translateY(24px) scale(.96);clip-path:inset(0 0 100% 0)}45%{opacity:1;clip-path:inset(0 0 0 0)}100%{opacity:1;transform:translateY(0) scale(1);clip-path:inset(0 0 0 0)}}
+@keyframes bars{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+@media (pointer:coarse){body,button,a{cursor:auto}[data-m="cursor"]{display:none!important}}
+@media (max-width:760px){
+[data-m="nav"]{padding:14px 16px!important}
+[data-m="navlinks"]{display:none!important}
+[data-m="loc"]{display:none!important}
+[data-m="title"]{left:16px!important;right:16px!important;bottom:calc(62vw * .4375 + 62px)!important;gap:12px!important}
+[data-m="titletext"]{font-size:clamp(38px,11.5vw,60px)!important}
+[data-m="bio"]{flex-direction:column!important;align-items:flex-start!important;gap:10px!important}
+[data-m="bio"]>div{text-align:left!important;font-size:11px!important}
+[data-m="biohint"]{display:none!important}
+[data-m="rail"]{padding:0 0 14px!important}
+[data-m="railgrid"]{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;padding:0 16px!important;gap:10px!important;scrollbar-width:none}
+[data-m="railgrid"]::-webkit-scrollbar{display:none}
+[data-m="railitem"]{flex:0 0 62vw!important;scroll-snap-align:start!important}
+[data-m="sec"]{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:38vh minmax(0,1fr)!important}
+[data-m="secimg"]{animation:none!important}
+[data-m="seccol"]{padding:16px 16px 64px!important;justify-content:flex-start!important;overflow:auto!important;min-height:0!important}
+[data-m="sectitle"]{margin-left:0!important;font-size:clamp(26px,8vw,40px)!important;margin-top:8px!important}
+[data-m="secbody"]{margin-top:16px!important}
+[data-m="hdr"]{top:14px!important;left:16px!important;right:16px!important;z-index:5}
+[data-m="foot"]{bottom:14px!important;left:16px!important;right:16px!important}
+[data-m="itemrow"]{grid-template-columns:minmax(0,1fr)!important;gap:4px!important}
+[data-m="hobbylist"]{left:16px!important;right:16px!important}
+[data-m="hobbyword"]{font-size:clamp(20px,6.5vw,32px)!important}
+[data-m="hobbynote"]{display:none!important}
+[data-m="hobbyrow"]{grid-template-columns:32px minmax(0,1fr)!important}
+[data-m="stars"]{left:10%!important;right:10%!important;top:30%!important;bottom:22%!important}
+[data-m="hint"] div:first-child{font-size:clamp(22px,7vw,34px)!important}
+[data-m="starlabel"]{font-size:13px!important}
+[data-m="starnote"]{white-space:normal!important;width:150px!important;font-size:10px!important}
+[data-m="hint"]{left:16px!important;right:16px!important;top:58px!important}
+[data-m="bar"]{height:4vh!important}
+[data-m="movie"]{grid-template-columns:minmax(0,1fr)!important;left:16px!important;right:16px!important;top:64px!important;bottom:56px!important;gap:18px!important;align-items:start!important;overflow:auto!important}
+[data-m="movieintro"]{gap:10px!important}
+[data-m="movietitle"]{font-size:clamp(22px,7vw,34px)!important}
+[data-m="frames"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+[data-m="contact"]{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:30vh minmax(0,1fr)!important}
+[data-m="contactimg"]{animation:none!important}
+[data-m="contactsig"]{left:16px!important;bottom:14px!important}
+[data-m="contactcol"]{padding:16px 16px 64px!important;justify-content:flex-start!important;overflow:auto!important}
+[data-m="contacttitle"]{margin-left:0!important;font-size:clamp(26px,8vw,40px)!important}
+[data-m="dossier"]{grid-template-columns:minmax(0,1fr)!important;max-height:100%!important}
+[data-m="dossierimg"]{min-height:200px!important;border-right:0!important;border-bottom:1px solid rgba(240,201,135,.15)}
+[data-m="dossierbody"]{padding:18px 16px!important}
+[data-m="lightbox"]{padding:64px 16px 96px!important}
+[data-m="arrowl"]{left:16px!important;top:auto!important;bottom:16px!important;transform:none!important}
+[data-m="arrowr"]{right:16px!important;top:auto!important;bottom:16px!important;transform:none!important}
+[data-m="posterfoot"]{bottom:64px!important;left:16px!important;right:16px!important;flex-direction:column!important;gap:10px!important;text-align:center;font-size:11px!important}
+[data-m="posterhdr"]{top:14px!important;left:16px!important;right:16px!important}
+[data-m="posterhdr"] span span:last-child{display:none}
+[data-m="modalwrap"]{padding:16px!important}
+}
+</style>
+<img data-asset="media/about.jpg" src="media/about.jpg" alt="" style="display:none">
+<img data-asset="media/contact.jpg" src="media/contact.jpg" alt="" style="display:none">
+<img data-asset="media/work.jpg" src="media/work.jpg" alt="" style="display:none">
+<img data-asset="media/hobby.jpg" src="media/hobby.jpg" alt="" style="display:none">
+<img data-asset="media/movie.jpg" src="media/movie.jpg" alt="" style="display:none">
+<img data-asset="media/work-detail.jpg" src="media/work-detail.jpg" alt="" style="display:none">
+<img data-asset="media/poster-peaky.jpg" src="media/poster-peaky.jpg" alt="" style="display:none">
+<img data-asset="media/poster-dune.jpg" src="media/poster-dune.jpg" alt="" style="display:none">
+<img data-asset="media/poster-drstone.jpg" src="media/poster-drstone.jpg" alt="" style="display:none">
+<img data-asset="media/poster-interstellar.jpg" src="media/poster-interstellar.jpg" alt="" style="display:none">
+<audio data-asset="media/voice-peaky.mp3" src="media/voice-peaky.mp3" preload="none" style="display:none"></audio>
+<audio data-asset="media/voice-dune.mp3" src="media/voice-dune.mp3" preload="none" style="display:none"></audio>
+<audio data-asset="media/voice-drstone.mp3" src="media/voice-drstone.mp3" preload="none" style="display:none"></audio>
+<audio data-asset="media/voice-interstellar.mp3" src="media/voice-interstellar.mp3" preload="none" style="display:none"></audio>
+</helmet>
+
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0a0c10"></rect><text x="100" y="118" text-anchor="middle" font-family="Michroma,Helvetica,sans-serif" font-size="52" fill="#f0c987">GD</text></svg></template>
+<div style="position:fixed;inset:0;background:#000;overflow:hidden" onMouseMove="{{ onMove }}" onMouseDown="{{ onShoot }}">
+
+  <!-- HERO -->
+  <div style="position:absolute;inset:0;overflow:hidden">
+    <sc-for list="{{ slices }}" as="s" hint-placeholder-count="1">
+      <div style="{{ s.style }}">
+        <sc-if value="{{ hasImg }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ s.imgStyle }}"></div>
+        </sc-if>
+
+      </div>
+    </sc-for>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.05) 35%,rgba(0,0,0,.1) 58%,rgba(0,0,0,.45) 72%,rgba(0,0,0,.85) 84%,rgba(0,0,0,.96) 100%)"></div>
+    <div style="position:absolute;inset:0;opacity:.35;background:repeating-linear-gradient(0deg,rgba(0,0,0,.35) 0 1px,transparent 1px 3px);pointer-events:none"></div>
+    <sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;left:0;right:0;height:120px;background:linear-gradient(180deg,transparent,rgba(240,201,135,.06),transparent);animation:scan 9s linear infinite;pointer-events:none"></div>
+    </sc-if>
+  </div>
+
+  <!-- NAV -->
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Hero" data-m="nav" style="position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:22px 32px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;animation:fadeIn .5s ease both">
+      <div style="font-family:Michroma,sans-serif;font-size:13px;letter-spacing:.08em;color:#eaf6ff">GD<span style="color:#e0a458">.</span>26</div>
+      <div data-m="navlinks" style="display:flex;gap:28px;color:#aeb8c4">
+        <sc-for list="{{ sections }}" as="n" hint-placeholder-count="5">
+          <button onClick="{{ n.open }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">{{ n.label }}</button>
+        </sc-for>
+        <a href="https://medium.com/@gunadharma201" target="_blank" rel="noreferrer" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="color:#f0c987;display:inline-flex;align-items:center;gap:6px" style-hover="color:#f7dcae">Blog <span style="font-size:12px">↗</span></a>
+      </div>
+      <div style="display:flex;align-items:center;gap:22px;color:#aeb8c4">
+        <button onClick="{{ toggleSound }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.25);padding:5px 10px;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;display:flex;align-items:center;gap:8px" style-hover="border-color:#f0c987;color:#f0c987"><span style="{{ soundBarStyle }}"></span>{{ soundLabel }}</button>
+        <span data-m="loc" style="display:flex;align-items:center;gap:10px">Jakarta, ID <span style="display:inline-block;width:6px;height:6px;background:#e0a458;animation:blink 2.4s ease-in-out infinite"></span></span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- TITLE -->
+  <div data-m="title" style="position:absolute;left:32px;right:32px;bottom:200px;display:flex;flex-direction:column;gap:18px;pointer-events:none">
+    <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#f0c987;animation:fadeUp .6s .1s ease both"><span style="display:inline-block;width:28px;height:1px;background:#e0a458"></span>Portfolio — 2026</div>
+    </sc-if>
+    <div style="position:relative">
+      <sc-for list="{{ titleLayers }}" as="l" hint-placeholder-count="1">
+        <div style="{{ l.style }}">
+          <div data-m="titletext" style="font-family:Michroma,sans-serif;font-size:clamp(44px,8.4vw,132px);line-height:.98;letter-spacing:.01em;text-transform:uppercase;background:linear-gradient(180deg,#ffffff 0%,#eef4f9 55%,#b9c7d6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 30px rgba(0,0,0,.7))"><div>Guna</div><div>Dharma</div></div>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+      <div data-m="bio" style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;animation:fadeUp .6s .25s ease both">
+        <div style="max-width:420px;font-size:12px;line-height:1.7;letter-spacing:.06em;text-transform:uppercase;color:#e3e9f0;text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.9);text-wrap:pretty">Cybersecurity engineer &amp; software developer in Jakarta. Securing high-stakes systems by day — designing, shooting and watching films by night.</div>
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4;text-align:right;line-height:1.8;text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.9)"><div style="color:#eaf6ff">Open for collaboration</div><div data-m="biohint">Choose a section below ↓</div></div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- META / HUD -->
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ true }}">
+
+
+  </sc-if>
+
+  <!-- THUMBNAIL RAIL -->
+  <sc-if value="{{ chrome }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Rail" data-m="rail" style="position:absolute;left:0;right:0;bottom:0;padding:0 24px 22px;animation:fadeUp .7s .35s ease both">
+      <div data-m="railgrid" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px">
+        <sc-for list="{{ sections }}" as="s" hint-placeholder-count="5">
+          <button data-m="railitem" onClick="{{ s.open }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;text-align:left;color:inherit;font:inherit;display:flex;flex-direction:column;gap:8px" style-hover="color:#eaf6ff">
+            <div style="display:flex;justify-content:space-between;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#c6ced7;text-shadow:0 1px 2px rgba(0,0,0,.95)"><span>{{ s.label }}</span><span>{{ s.num }}</span></div>
+            <div style="position:relative;width:100%;aspect-ratio:16/7;overflow:hidden;background:#0a0d12;border:1px solid rgba(233,238,243,.12);transition:border-color .2s" style-hover="border-color:rgba(240,201,135,.7)">
+              <sc-if value="{{ s.hasImg }}" hint-placeholder-val="{{ false }}">
+                <div style="{{ s.imgStyle }}"></div>
+              </sc-if>
+              <sc-if value="{{ s.noImg }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#0d1117 0 8px,#141a22 8px 16px);display:grid;place-items:center;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6f7b88">movie still — drop image</div>
+              </sc-if>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- SECTION TAKEOVER -->
+  <sc-if value="{{ isOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Section" data-m="sec" style="position:absolute;inset:0;background:#050607;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);animation:fadeIn .35s ease both">
+      <sc-if value="{{ isHobby }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Hobby" style="position:absolute;inset:0;overflow:hidden">
+          <div style="{{ hobbyBg }}"></div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(0,0,0,0) 0%,rgba(5,6,7,.7) 60%,#050607 100%)"></div>
+          <div style="position:absolute;inset:0;opacity:.3;background:repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0 1px,transparent 1px 3px);pointer-events:none"></div>
+          <div data-m="hdr" style="position:absolute;top:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <span>{{ open.num }} / 05 — {{ open.label }}</span>
+            <button onClick="{{ close }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:6px 12px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+          </div>
+          <div data-m="hobbylist" style="position:absolute;left:32px;right:32px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:clamp(6px,1.2vh,14px)">
+            <div style="display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#f0c987;margin-bottom:8px;animation:fadeUp .5s ease both"><span style="display:inline-block;width:28px;height:1px;background:#e0a458"></span>{{ open.body }}</div>
+            <sc-for list="{{ hobbyItems }}" as="h" hint-placeholder-count="5">
+              <div data-m="hobbyrow" onMouseEnter="{{ h.onEnter }}" onMouseLeave="{{ h.onLeave }}" style="display:grid;grid-template-columns:40px minmax(0,auto) minmax(0,1fr);align-items:baseline;gap:20px;border-top:1px solid rgba(233,238,243,.1);padding-top:clamp(4px,1vh,10px)">
+                <span style="font-size:11px;letter-spacing:.14em;color:#aeb8c4">{{ h.k }}</span>
+                <span style="{{ h.wordStyle }}"><span data-m="hobbyword" style="font-family:Michroma,sans-serif;font-size:clamp(24px,4.6vw,64px);line-height:1.05;text-transform:uppercase;white-space:nowrap">{{ h.v }}</span></span>
+                <span data-m="hobbynote" style="{{ h.noteStyle }}"><span style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#c6ced7">{{ h.note }}</span></span>
+              </div>
+            </sc-for>
+          </div>
+          <div data-m="foot" style="position:absolute;bottom:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <button onClick="{{ prev }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">← {{ prevLabel }}</button>
+            <button onClick="{{ next }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">{{ nextLabel }} →</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isHobbyCards }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Hobby cards" style="position:absolute;inset:0;overflow:hidden;background:#050607">
+          <div data-m="hdr" style="position:absolute;top:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <span>{{ open.num }} / 05 — {{ open.label }}</span>
+            <button onClick="{{ close }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:6px 12px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+          </div>
+          <div style="position:absolute;left:32px;right:32px;top:72px;bottom:64px;display:flex;flex-direction:column;gap:22px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
+              <div style="font-family:Michroma,sans-serif;font-size:clamp(26px,4vw,56px);line-height:1;text-transform:uppercase;color:#f4f8fc;animation:fadeUp .5s ease both">Off the clock</div>
+              <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#f0c987;animation:fadeUp .5s .1s ease both">{{ open.body }}</div>
+            </div>
+            <div style="flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px">
+              <sc-for list="{{ hobbyCards }}" as="c" hint-placeholder-count="5">
+                <div onMouseEnter="{{ c.onEnter }}" onMouseLeave="{{ c.onLeave }}" style="{{ c.cardStyle }}">
+                  <div style="{{ c.cardBg }}"></div>
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,7,.2) 0%,rgba(5,6,7,0) 40%,rgba(5,6,7,.85) 100%)"></div>
+                  <div style="position:absolute;top:14px;left:16px;font-size:11px;letter-spacing:.16em;color:#f0c987">{{ c.k }}</div>
+                  <div style="position:absolute;top:14px;right:14px;width:12px;height:12px;border-right:1px solid rgba(240,201,135,.6);border-top:1px solid rgba(240,201,135,.6)"></div>
+                  <div style="{{ c.noteStyle }}">{{ c.note }}</div>
+                  <div style="{{ c.wordStyle }}">{{ c.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div data-m="foot" style="position:absolute;bottom:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <button onClick="{{ prev }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">← {{ prevLabel }}</button>
+            <button onClick="{{ next }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">{{ nextLabel }} →</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isHobbyStars }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Hobby constellation" style="position:absolute;inset:0;overflow:hidden">
+          <div style="{{ hobbyBg }}"></div>
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 0%,rgba(5,6,7,.75) 70%,#050607 100%)"></div>
+          <div data-m="hdr" style="position:absolute;top:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <span>{{ open.num }} / 05 — {{ open.label }}</span>
+            <button onClick="{{ close }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:6px 12px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+          </div>
+          <div data-m="hint" style="position:absolute;left:32px;top:64px;display:flex;flex-direction:column;gap:10px;animation:fadeUp .5s ease both">
+            <div style="font-family:Michroma,sans-serif;font-size:clamp(26px,3.6vw,54px);line-height:1;text-transform:uppercase;color:#f4f8fc;text-shadow:0 8px 40px rgba(0,0,0,.8)">{{ open.title }}</div>
+            <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#f0c987">{{ open.body }} — tap a star</div>
+          </div>
+          <div data-m="stars" style="position:absolute;left:6%;right:6%;top:16%;bottom:16%">
+            <svg style="position:absolute;inset:0;width:100%;height:100%;overflow:visible" preserveAspectRatio="none">
+              <sc-for list="{{ starLines }}" as="ln" hint-placeholder-count="4">
+                <line x1="{{ ln.x1 }}" y1="{{ ln.y1 }}" x2="{{ ln.x2 }}" y2="{{ ln.y2 }}" stroke="rgba(240,201,135,.55)" stroke-width="1" stroke-dasharray="4 6" style="animation:fadeIn 1.2s .4s ease both"></line>
+              </sc-for>
+            </svg>
+            <sc-for list="{{ hobbyStars }}" as="st" hint-placeholder-count="5">
+              <div onMouseEnter="{{ st.onEnter }}" onMouseLeave="{{ st.onLeave }}" style="{{ st.nodeStyle }}">
+                <div style="padding:12px;margin:-12px"><div style="{{ st.dotStyle }}"></div></div>
+                <div data-m="starlabel" style="{{ st.labelStyle }}">{{ st.v }}</div>
+                <div data-m="starnote" style="{{ st.noteStyle }}">{{ st.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div data-m="foot" style="position:absolute;bottom:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <button onClick="{{ prev }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">← {{ prevLabel }}</button>
+            <button onClick="{{ next }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">{{ nextLabel }} →</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isMovie }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Movie" style="position:absolute;inset:0;overflow:hidden;background:#000">
+          <div style="{{ movieBg }}"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.75))"></div>
+          <div data-m="bar" style="position:absolute;left:0;right:0;top:0;height:7vh;background:#000;z-index:2"></div>
+          <div data-m="bar" style="position:absolute;left:0;right:0;bottom:0;height:7vh;background:#000;z-index:2"></div>
+          <div data-m="hdr" style="position:absolute;top:22px;left:32px;right:32px;z-index:3;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <span>{{ open.num }} / 05 — {{ open.label }}</span>
+            <button onClick="{{ close }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:6px 12px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+          </div>
+          <div data-m="movie" style="position:absolute;left:32px;right:32px;top:9vh;bottom:9vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:40px;align-items:center">
+            <div data-m="movieintro" style="display:flex;flex-direction:column;gap:18px">
+              <div style="display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#f0c987;animation:fadeUp .5s ease both"><span style="display:inline-block;width:28px;height:1px;background:#e0a458"></span>Now showing</div>
+              <div data-m="movietitle" style="font-family:Michroma,sans-serif;font-size:clamp(26px,3.6vw,54px);line-height:1.05;text-transform:uppercase;color:#f4f8fc;text-shadow:0 8px 40px rgba(0,0,0,.8);animation:fadeUp .5s .1s ease both">{{ open.title }}</div>
+              <div style="max-width:380px;font-size:12px;line-height:1.75;letter-spacing:.05em;text-transform:uppercase;color:#c6ced7;text-wrap:pretty;animation:fadeUp .5s .2s ease both">{{ open.body }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;animation:fadeUp .6s .2s ease both">
+              <div style="height:14px;background:repeating-linear-gradient(90deg,transparent 0 10px,rgba(233,238,243,.25) 10px 22px,transparent 22px 34px);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);border-top:1px solid rgba(233,238,243,.12);border-bottom:1px solid rgba(233,238,243,.12)"></div>
+              <div data-m="frames" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+                <sc-for list="{{ movieFrames }}" as="f" hint-placeholder-count="4">
+                  <div onClick="{{ f.onClick }}" onMouseEnter="{{ f.onEnter }}" onMouseLeave="{{ f.onLeave }}" style="{{ f.frameStyle }}">
+                    <div style="{{ f.posterStyle }}"></div>
+                    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,0) 35%,rgba(0,0,0,.85) 100%)"></div>
+                    <div style="position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;font-size:min(10px,6.5cqw);letter-spacing:.1em;text-transform:uppercase;color:#aeb8c4;white-space:nowrap"><span style="color:#f0c987;flex:none">{{ f.k }}</span><span style="overflow:hidden;text-overflow:ellipsis">{{ f.type }}</span></div>
+                    <div style="{{ f.noteStyle }}">“{{ f.note }}”</div>
+                    <div style="{{ f.titleStyle }}">{{ f.v }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="height:14px;background:repeating-linear-gradient(90deg,transparent 0 10px,rgba(233,238,243,.25) 10px 22px,transparent 22px 34px);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);border-top:1px solid rgba(233,238,243,.12);border-bottom:1px solid rgba(233,238,243,.12)"></div>
+            </div>
+          </div>
+          <div data-m="foot" style="position:absolute;bottom:22px;left:32px;right:32px;z-index:3;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+            <button onClick="{{ prev }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">← {{ prevLabel }}</button>
+            <button onClick="{{ next }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">{{ nextLabel }} →</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Contact" data-m="contact" style="position:absolute;inset:0;overflow:hidden;background:#050607;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)">
+          <div data-m="contactimg" style="position:relative;overflow:hidden;animation:slideL .7s cubic-bezier(.7,0,.2,1) both">
+            <div style="{{ contactBg }}"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,6,7,0) 55%,#050607 100%),linear-gradient(180deg,rgba(5,6,7,.3),rgba(5,6,7,0) 30%,rgba(5,6,7,.6) 100%)"></div>
+            <div style="position:absolute;inset:0;opacity:.25;background:repeating-linear-gradient(0deg,rgba(0,0,0,.5) 0 1px,transparent 1px 3px);pointer-events:none"></div>
+            <div data-m="contactsig" style="position:absolute;left:32px;bottom:64px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#f0c987;display:flex;align-items:center;gap:10px"><span style="display:inline-block;width:6px;height:6px;background:#e0a458;animation:blink 2s ease-in-out infinite"></span>Signal open — Jakarta, UTC+7</div>
+          </div>
+          <div data-m="contactcol" style="position:relative;padding:76px 32px 60px;display:flex;flex-direction:column;justify-content:center;min-height:0">
+            <div data-m="hdr" style="position:absolute;top:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+              <span>{{ open.num }} / 05 — {{ open.label }}</span>
+              <button onClick="{{ close }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:6px 12px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+            </div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+              <div data-m="contacttitle" style="margin-left:-18%;font-family:Michroma,sans-serif;font-size:clamp(28px,4.2vw,64px);line-height:.95;text-transform:uppercase;color:#f2f9ff;text-shadow:0 8px 40px rgba(0,0,0,.8);animation:fadeUp .6s .3s ease both">Let's talk.</div>
+              <div style="max-width:300px;font-size:11px;line-height:1.7;letter-spacing:.06em;text-transform:uppercase;color:#c6ced7;animation:fadeUp .6s .4s ease both">{{ open.body }}</div>
+            </div>
+            <div style="margin-top:clamp(8px,1.8vh,20px);display:flex;flex-direction:column;border-bottom:1px solid rgba(233,238,243,.12)">
+              <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="4">
+                <a href="{{ c.href }}" target="_blank" rel="noreferrer" onClick="{{ c.onClick }}" onMouseEnter="{{ c.onEnter }}" onMouseLeave="{{ c.onLeave }}" style="{{ c.rowStyle }}">
+                  <div style="{{ c.iconBox }}">
+                    <sc-if value="{{ c.isMail }}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"></rect><path d="M3 7l9 6 9-6"></path></svg></sc-if>
+                    <sc-if value="{{ c.isIn }}" hint-placeholder-val="{{ false }}"><span style="font-family:Michroma,sans-serif;font-size:16px;line-height:1">in</span></sc-if>
+                    <sc-if value="{{ c.isIg }}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></sc-if>
+                    <sc-if value="{{ c.isBlog }}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg></sc-if>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                    <div style="{{ c.labelStyle }}">{{ c.k }}</div>
+                    <div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;font-size:12px;letter-spacing:.06em;color:#aeb8c4"><span style="color:#e3e9f0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.v }}</span><span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase">{{ c.hint }}</span></div>
+                  </div>
+                  <div style="{{ c.arrowStyle }}">↗</div>
+                </a>
+              </sc-for>
+            </div>
+            <div style="margin-top:clamp(8px,1.8vh,18px);display:flex;gap:12px;align-items:center;animation:fadeUp .6s .6s ease both">
+              <button onClick="{{ copyMail }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:#f0c987;border:1px solid #f0c987;padding:9px 16px;color:#0a0c10;font:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700" style-hover="background:#f7dcae;border-color:#f7dcae">{{ copied }}</button>
+              <span style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7f8b98">or pick a channel above</span>
+            </div>
+            <div data-m="foot" style="position:absolute;bottom:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+              <button onClick="{{ prev }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">← {{ prevLabel }}</button>
+              <button onClick="{{ next }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">{{ nextLabel }} →</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isStandard }}" hint-placeholder-val="{{ true }}">
+      <div data-m="secimg" style="position:relative;overflow:hidden;animation:slideL .7s cubic-bezier(.7,0,.2,1) both">
+        <sc-if value="{{ open.hasImg }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ open.imgStyle }}"></div>
+        </sc-if>
+        <sc-if value="{{ open.noImg }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,#0d1117 0 12px,#141a22 12px 24px);display:grid;place-items:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6f7b88">movie still — drop image</div>
+        </sc-if>
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,#050607 100%)"></div>
+      </div>
+      <div data-m="seccol" style="position:relative;padding:72px 32px 60px;display:flex;flex-direction:column;justify-content:center">
+        <div data-m="hdr" style="position:absolute;top:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+          <span>{{ open.num }} / 05 — {{ open.label }}</span>
+          <button onClick="{{ close }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:6px 12px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+        </div>
+        <div data-m="sectitle" style="margin-left:-28%;font-family:Michroma,sans-serif;font-size:clamp(34px,5.6vw,88px);line-height:.95;text-transform:uppercase;color:#f2f9ff;text-shadow:0 8px 40px rgba(0,0,0,.8);animation:fadeUp .6s .3s ease both">{{ open.title }}</div>
+        <div data-m="secbody" style="margin-top:36px;max-width:440px;font-size:12px;line-height:1.75;letter-spacing:.06em;text-transform:uppercase;color:#c6ceD7;animation:fadeUp .6s .45s ease both;text-wrap:pretty">{{ open.body }}</div>
+        <div style="margin-top:28px;display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#7f8b98;animation:fadeUp .6s .55s ease both">
+          <sc-for list="{{ open.items }}" as="it" hint-placeholder-count="3">
+            <div style="border-top:1px solid rgba(233,238,243,.1)">
+              <button data-m="itemrow" onClick="{{ it.toggle }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="width:100%;display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:9px 0;background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;text-align:left" style-hover="color:#eaf6ff"><span style="color:#e0a458">{{ it.k }}</span><span style="color:#c6ced7">{{ it.v }}</span><span style="color:#e0a458;font-size:10px;white-space:nowrap">{{ it.chevron }}</span></button>
+            </div>
+          </sc-for>
+        </div>
+        <div data-m="foot" style="position:absolute;bottom:22px;left:32px;right:32px;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+          <button onClick="{{ prev }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">← {{ prevLabel }}</button>
+          <button onClick="{{ next }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:0;padding:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="color:#eaf6ff">{{ nextLabel }} →</button>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- POSTER LIGHTBOX -->
+  <sc-if value="{{ posterOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Poster" data-m="lightbox" onClick="{{ closePoster }}" style="position:absolute;inset:0;z-index:40;background:rgba(0,0,0,.92);overflow:hidden;display:grid;place-items:center;padding:60px 90px 52px;animation:fadeIn .25s ease both">
+      <div style="{{ poster.glowStyle }}"></div>
+      <div onClick="{{ stop }}" style="position:relative;width:100%;height:100%;animation:dossier .5s cubic-bezier(.2,.8,.2,1) both">
+        <div style="{{ poster.imgStyle }}"></div>
+      </div>
+      <div data-m="posterhdr" style="position:absolute;top:22px;left:32px;right:32px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#aeb8c4">
+        <span style="display:flex;gap:14px;align-items:baseline"><span style="color:#f0c987">{{ poster.k }}</span><span style="font-family:Michroma,sans-serif;font-size:14px;color:#f4f8fc">{{ poster.v }}</span><span>{{ poster.type }}</span></span>
+        <button onClick="{{ closePoster }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:6px 12px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+      </div>
+      <button data-m="arrowl" onClick="{{ posterPrev }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="position:absolute;left:32px;top:50%;transform:translateY(-50%);background:none;border:1px solid rgba(233,238,243,.25);width:40px;height:40px;color:#eaf6ff;font:inherit;font-size:16px" style-hover="border-color:#f0c987;color:#f0c987">←</button>
+      <button data-m="arrowr" onClick="{{ posterNext }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="position:absolute;right:32px;top:50%;transform:translateY(-50%);background:none;border:1px solid rgba(233,238,243,.25);width:40px;height:40px;color:#eaf6ff;font:inherit;font-size:16px" style-hover="border-color:#f0c987;color:#f0c987">→</button>
+      <div data-m="posterfoot" style="position:absolute;bottom:22px;left:32px;right:32px;display:flex;justify-content:center;align-items:center;gap:22px;font-size:12px;letter-spacing:.06em;color:#c6ced7">
+        <span style="font-style:italic">“{{ poster.note }}”</span>
+        <button onClick="{{ replayVoice }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.25);padding:5px 10px;color:#eaf6ff;font:inherit;font-size:10px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px" style-hover="border-color:#f0c987;color:#f0c987"><span style="{{ voiceBarStyle }}"></span>{{ voiceLabel }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- WORK DOSSIER MODAL -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Work detail" data-m="modalwrap" onClick="{{ closeModal }}" style="position:absolute;inset:0;z-index:40;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:grid;place-items:center;padding:24px;animation:fadeIn .25s ease both">
+      <div data-m="dossier" onClick="{{ stop }}" style="position:relative;width:min(920px,100%);max-height:100%;overflow:auto;background:#0a0c10;border:1px solid rgba(240,201,135,.25);box-shadow:0 30px 80px rgba(0,0,0,.8);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);animation:dossier .55s cubic-bezier(.2,.8,.2,1) both">
+        <div data-m="dossierimg" style="position:relative;min-height:320px;overflow:hidden;border-right:1px solid rgba(240,201,135,.15)">
+          <div style="{{ modal.imgStyle }}"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,16,.1),rgba(10,12,16,.55) 100%)"></div>
+          <div style="position:absolute;inset:0;opacity:.25;background:repeating-linear-gradient(0deg,rgba(0,0,0,.5) 0 1px,transparent 1px 3px);pointer-events:none"></div>
+          <div style="position:absolute;top:14px;left:14px;width:16px;height:16px;border-left:1px solid #f0c987;border-top:1px solid #f0c987"></div>
+          <div style="position:absolute;bottom:14px;right:14px;width:16px;height:16px;border-right:1px solid #f0c987;border-bottom:1px solid #f0c987"></div>
+          <div style="position:absolute;left:16px;bottom:14px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#f0c987">{{ modal.file }} — {{ modal.period }}</div>
+        </div>
+        <div data-m="dossierbody" style="padding:26px 28px 24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#aeb8c4">
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;background:#e0a458;display:inline-block;animation:blink 1.6s ease-in-out infinite"></span>Classified — Work file</span>
+            <button onClick="{{ closeModal }}" onMouseEnter="{{ hotOn }}" onMouseLeave="{{ hotOff }}" style="background:none;border:1px solid rgba(233,238,243,.3);padding:5px 10px;color:#eaf6ff;font:inherit;letter-spacing:inherit;text-transform:inherit" style-hover="border-color:#f0c987;color:#f0c987">Close — Esc</button>
+          </div>
+          <div>
+            <div style="font-family:Michroma,sans-serif;font-size:clamp(18px,1.8vw,26px);line-height:1.15;text-transform:uppercase;color:#f4f8fc;animation:fadeUp .5s .15s ease both">{{ modal.role }}</div>
+            <div style="margin-top:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#f0c987;animation:fadeUp .5s .22s ease both">{{ modal.org }}</div>
+          </div>
+          <div style="font-size:12px;line-height:1.8;letter-spacing:.03em;color:#c6ced7;text-wrap:pretty;animation:fadeUp .5s .3s ease both">{{ modal.detail }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;animation:fadeUp .5s .38s ease both">
+            <sc-for list="{{ modal.tags }}" as="tg" hint-placeholder-count="3">
+              <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#e3e9f0;border:1px solid rgba(233,238,243,.2);padding:5px 9px">{{ tg }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- LOADER (pure black) -->
+  <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:#000;z-index:50"></div>
+  </sc-if>
+
+  <!-- SHOOT FX -->
+  <sc-for list="{{ shots }}" as="sh" hint-placeholder-count="0">
+    <div style="{{ sh.style }}"></div>
+  </sc-for>
+  <sc-if value="{{ flashOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:#dff1ff;pointer-events:none;z-index:60;animation:flash .18s ease-out both"></div>
+  </sc-if>
+
+  <!-- CURSOR -->
+  <div data-m="cursor" ref="{{ cursorRef }}" style="position:absolute;left:0;top:0;width:34px;height:34px;pointer-events:none;z-index:70;transform:translate(-100px,-100px);will-change:transform">
+    <div style="position:absolute;inset:0;transition:transform .18s ease,opacity .18s;transform:{{ hotScale }}">
+      <div style="position:absolute;left:0;top:0;width:9px;height:9px;border-left:1.5px solid #eaf6ff;border-top:1.5px solid #eaf6ff"></div>
+      <div style="position:absolute;right:0;top:0;width:9px;height:9px;border-right:1.5px solid #eaf6ff;border-top:1.5px solid #eaf6ff"></div>
+      <div style="position:absolute;left:0;bottom:0;width:9px;height:9px;border-left:1.5px solid #eaf6ff;border-bottom:1.5px solid #eaf6ff"></div>
+      <div style="position:absolute;right:0;bottom:0;width:9px;height:9px;border-right:1.5px solid #eaf6ff;border-bottom:1.5px solid #eaf6ff"></div>
+      <div style="position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px;background:#e0a458;border-radius:50%;box-shadow:0 0 6px #e0a458"></div>
+      <div style="position:absolute;left:50%;top:-6px;width:1px;height:6px;background:rgba(234,246,255,.7)"></div>
+      <div style="position:absolute;left:50%;bottom:-6px;width:1px;height:6px;background:rgba(234,246,255,.7)"></div>
+      <div style="position:absolute;top:50%;left:-6px;height:1px;width:6px;background:rgba(234,246,255,.7)"></div>
+      <div style="position:absolute;top:50%;right:-6px;height:1px;width:6px;background:rgba(234,246,255,.7)"></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroClip&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Silhouette in spotlight&quot;,&quot;options&quot;:[&quot;Foggy street&quot;,&quot;Silhouette in spotlight&quot;,&quot;Smoky alley&quot;,&quot;Red nebula&quot;,&quot;Astronaut (my upload)&quot;,&quot;Crowned figure (my upload)&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;glitchImage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Foggy street&quot;,&quot;options&quot;:[&quot;Silhouette in spotlight&quot;,&quot;Foggy street&quot;,&quot;Smoky alley&quot;,&quot;Red nebula&quot;,&quot;Astronaut (my upload)&quot;,&quot;Crowned figure (my upload)&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;hobbyLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Constellation&quot;,&quot;options&quot;:[&quot;Cards&quot;,&quot;Constellation&quot;,&quot;List&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;soundDefault&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sound&quot;},&quot;openSound&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Cinematic hit&quot;,&quot;options&quot;:[&quot;Cinematic hit&quot;,&quot;Dark whisper&quot;,&quot;Bell in the void&quot;,&quot;Radio signal&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sound&quot;},&quot;skipIntro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Intro&quot;},&quot;revealSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.75,&quot;min&quot;:0.5,&quot;max&quot;:3,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Intro&quot;},&quot;shootFx&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Cursor&quot;}}">
+class Component extends DCLogic {
+  state = { phase: 'loading', slices: [{ style: { position: 'absolute', inset: 0 } }], titleOffsets: [], glitching: false, openKey: null, hot: false, shots: [], flashOn: false };
+  cursorRef = React.createRef();
+  asset(p) { if (!p || !p.startsWith('media/')) return p; if (!this._assets) { this._assets = {}; document.querySelectorAll('[data-asset]').forEach(el => { const s = el.getAttribute('src'); if (s && s !== el.getAttribute('data-asset')) this._assets[el.getAttribute('data-asset')] = s; }); } return this._assets[p] || p; }
+  clips = {
+    'Silhouette in spotlight': { img: 'https://images.pexels.com/photos/30681569/pexels-photo-30681569.jpeg?auto=compress&w=1920', pos: 'center 30%', filter: 'saturate(.6) contrast(1.1) brightness(.85)' },
+    'Foggy street': { img: 'https://images.pexels.com/photos/29494279/pexels-photo-29494279.jpeg?auto=compress&w=1920', pos: 'center 40%', filter: 'saturate(.5) contrast(1.1) brightness(.75)' },
+    'Smoky alley': { img: 'https://images.pexels.com/photos/32930795/pexels-photo-32930795.jpeg?auto=compress&w=1920', pos: 'center 35%', filter: 'saturate(.6) contrast(1.1) brightness(.8)' },
+    'Red nebula': { img: 'https://images.pexels.com/videos/12275385/pexels-photo-12275385.jpeg?auto=compress&w=1920', pos: 'center 40%', filter: 'saturate(.8) contrast(1.1) brightness(.8)' },
+    'Astronaut (my upload)': { img: 'media/about.jpg', pos: 'center 20%', filter: 'saturate(.7) contrast(1.05) brightness(.75)' },
+    'Crowned figure (my upload)': { img: 'media/contact.jpg', pos: 'center 15%', filter: 'saturate(.8) contrast(1.05) brightness(.8)' }
+  };
+  clip() { return this.clips[this.props.heroClip] || this.clips['Foggy street']; }
+  glitchClip() { return this.clips[this.props.glitchImage] || this.clips['Silhouette in spotlight']; }
+  sectionsData = [
+    { key: 'about', label: 'About Me', num: '01', img: 'media/about.jpg', pos: 'center 25%', title: 'About Me', body: 'Cybersecurity engineer and software developer with 2+ years of hands-on experience delivering enterprise-grade solutions in high-stakes financial and security environments. Off the clock I design things, shoot photographs, and watch far too many films.', items: [{ k: 'Role', v: 'Cybersecurity Engineer / Tech Nerd' }, { k: 'Base', v: 'Jakarta, ID' }, { k: 'Focus', v: 'Security · Software · Design' }, { k: 'Now', v: 'Open for collaboration' }] },
+    { key: 'work', label: 'Work Experience', num: '02', img: 'media/work.jpg', title: 'Work Experience', body: 'Where I have worked, most recent first. Click a role for details.', items: [
+      { k: '2024 — Present', v: 'Cybersecurity Engineer — ALTO Network', role: 'Cybersecurity Engineer', org: 'ALTO Network', period: '2024 — Present', file: 'CASE 01', img: 'media/work-detail.jpg', detail: 'Placeholder — describe your responsibilities: securing payment infrastructure, threat detection & response, vulnerability management, compliance (PCI-DSS).', tags: ['Threat detection', 'Vulnerability mgmt', 'PCI-DSS', 'Incident response'] },
+      { k: '2023 — 2024', v: 'Software Engineer Intern — PT Perkebunan Nusantara III', role: 'Software Engineer Intern', org: 'PT Perkebunan Nusantara III', period: '2023 — 2024', file: 'CASE 02', img: 'media/work-detail.jpg', detail: 'Placeholder — built internal tools, backend services and automation for plantation operations; stack and impact.', tags: ['Backend', 'Internal tools', 'Automation'] },
+      { k: '2022 — Present', v: 'Freelancer', role: 'Freelancer', org: 'Independent', period: '2022 — Present', file: 'CASE 03', img: 'media/work-detail.jpg', detail: 'Placeholder — web development, security audits and design work for clients; notable projects.', tags: ['Web dev', 'Security audit', 'Design'] }] },
+    { key: 'hobby', label: 'Hobby', num: '03', img: 'media/hobby.jpg', title: 'Hobby', layout: 'hobby', body: 'What I do when the screen is off.', items: [{ k: '01', v: 'Fishing', note: 'Patience training, disguised as a weekend.' }, { k: '02', v: 'Reading', note: 'Mostly non-fiction, security and sci-fi.' }, { k: '03', v: 'Gaming', note: 'Story-driven, the slower the better.' }, { k: '04', v: 'Watching movies', note: 'See section 04.' }, { k: '05', v: 'Doing fun stuff', note: 'Anything that ends with a good story.' }] },
+    { key: 'movie', label: 'Movie', num: '04', img: 'media/movie.jpg', pos: 'center 30%', title: 'My Favorite Movie', body: 'The stories I keep coming back to — slow burns, big ideas, and a bit of science.', layout: 'movie', items: [{ k: '01', v: 'Peaky Blinders', type: 'Series · 2013', note: 'By order of the Peaky Blinders.', poster: 'media/poster-peaky.jpg', voice: 'media/voice-peaky.mp3' }, { k: '02', v: 'Dune', type: 'Film · 2021', note: 'Fear is the mind-killer.', poster: 'media/poster-dune.jpg', voice: 'media/voice-dune.mp3' }, { k: '03', v: 'Dr. Stone', type: 'Anime · 2019', note: 'Ten billion percent.', poster: 'media/poster-drstone.jpg', voice: 'media/voice-drstone.mp3' }, { k: '04', v: 'Interstellar', type: 'Film · 2014', note: 'Do not go gentle into that good night.', poster: 'media/poster-interstellar.jpg', voice: 'media/voice-interstellar.mp3' }] },
+    { key: 'contact', label: 'Contact', num: '05', img: 'media/contact.jpg', pos: 'center 22%', title: 'Contact', layout: 'contact', body: 'Send a signal. I usually answer within a day.', items: [{ k: 'Mail', icon: 'mail', v: 'gunadharma201@gmail.com', href: 'mailto:gunadharma201@gmail.com', hint: 'Best for work' }, { k: 'LinkedIn', icon: 'in', v: 'in/gunadharma0408', href: 'https://linkedin.com/in/gunadharma0408', hint: 'Professional' }, { k: 'Instagram', icon: 'ig', v: '@gunaaax', href: 'https://instagram.com/gunaaax', hint: 'Photos & fun stuff' }, { k: 'Blog', icon: 'blog', v: 'medium.com/@gunadharma201', href: 'https://medium.com/@gunadharma201', hint: 'Writing on security & tech' }] }
+  ];
+  componentDidMount() {
+    this._key = (e) => {
+      if (e.key === 'Escape') { if (this.state.poster != null) { this.sfx('close'); this.stopVoice(); this.setState({ poster: null }); } else if (this.state.expanded != null) { this.sfx('close'); this.setState({ expanded: null }); } else { this.stopVoice(); this.setState({ openKey: null }); } }
+      if (this.state.poster != null && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) { const items = this.sectionsData.find(s => s.key === this.state.openKey).items; const n = (this.state.poster + (e.key === 'ArrowRight' ? 1 : items.length - 1)) % items.length; this.sfx('tick'); this.setState({ poster: n }); this.playVoice(items[n].voice); }
+    };
+    window.addEventListener('keydown', this._key);
+    let want = this.props.soundDefault ?? false; try { const s = localStorage.getItem('gd-sound'); if (s !== null) want = s === '1'; } catch (e) {}
+    this.setState({ sound: want, soundWanted: want });
+    // audio needs a user gesture — arm on first pointer/key
+    const arm = () => { if (this.state.soundWanted && !this.ac) this.setSound(true); window.removeEventListener('pointerdown', arm); window.removeEventListener('keydown', arm); };
+    window.addEventListener('pointerdown', arm); window.addEventListener('keydown', arm);
+    if (this.props.skipIntro) { this.setState({ phase: 'ready' }); return; }
+    const imgs = this.sectionsData.map(s => s.img).filter(Boolean).concat(this.sectionsData.flatMap(s => s.items.map(it => it.poster).filter(Boolean)));
+    const load = src => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = this.asset(src); });
+    const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+    const minWait = new Promise(r => setTimeout(r, 500));
+    const all = Promise.all([...imgs.map(load), load(this.clip().img), load(this.glitchClip().img), fonts, minWait]);
+    const timeout = new Promise(r => setTimeout(r, 9000));
+    Promise.race([all, timeout]).then(() => this.startReveal());
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._key); clearInterval(this._gi); clearInterval(this._ti); if (this.ac) this.ac.close(); }
+  // --- Sound (synthesized, no files) ---
+  ensureAudio() {
+    if (this.ac) return this.ac;
+    const ac = this.ac = new (window.AudioContext || window.webkitAudioContext)();
+    this.master = ac.createGain(); this.master.gain.value = 0; this.master.connect(ac.destination);
+    // ambient drone: two detuned lows + slow LFO
+    const drone = ac.createGain(); drone.gain.value = 0.16; drone.connect(this.master);
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 220; lp.connect(drone);
+    [[55, 'sine'], [82.4, 'triangle'], [110.5, 'sine']].forEach(([f, t], i) => { const o = ac.createOscillator(); o.type = t; o.frequency.value = f; o.detune.value = i * 4; const g = ac.createGain(); g.gain.value = i === 0 ? 1 : .4; o.connect(g); g.connect(lp); o.start(); });
+    const lfo = ac.createOscillator(); lfo.frequency.value = 0.07; const lg = ac.createGain(); lg.gain.value = 0.07; lfo.connect(lg); lg.connect(drone.gain); lfo.start();
+    // air: filtered noise
+    this.noiseBuf = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate); const d = this.noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const air = ac.createBufferSource(); air.buffer = this.noiseBuf; air.loop = true; const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 500; bp.Q.value = .6; const ag = ac.createGain(); ag.gain.value = 0.012; air.connect(bp); bp.connect(ag); ag.connect(this.master); air.start();
+    return ac;
+  }
+  playVoice(src) {
+    this.stopVoice();
+    if (!src) return;
+    const a = this.voice = new Audio(this.asset(src)); a.volume = 0.9;
+    a.onended = () => { if (this.voice === a) { this.voice = null; this.setState({ voicePlaying: false }); } };
+    a.play().then(() => this.setState({ voicePlaying: true })).catch(() => {});
+    // duck the ambient drone while the line plays
+    if (this.ac && this.master && this.state.sound) { this.master.gain.cancelScheduledValues(this.ac.currentTime); this.master.gain.linearRampToValueAtTime(.25, this.ac.currentTime + .3); }
+  }
+  stopVoice() {
+    if (this.voice) { this.voice.pause(); this.voice = null; }
+    if (this.state.voicePlaying) this.setState({ voicePlaying: false });
+    if (this.ac && this.master && this.state.sound) { this.master.gain.cancelScheduledValues(this.ac.currentTime); this.master.gain.linearRampToValueAtTime(1, this.ac.currentTime + .8); }
+  }
+  setSound(on) {
+    const ac = this.ensureAudio(); if (ac.state === 'suspended') ac.resume();
+    this.master.gain.cancelScheduledValues(ac.currentTime); this.master.gain.linearRampToValueAtTime(on ? 1 : 0, ac.currentTime + (on ? 1.5 : .4));
+    this.setState({ sound: on }); try { localStorage.setItem('gd-sound', on ? '1' : '0'); } catch (e) {}
+  }
+  sfx(kind) {
+    if (!this.state.sound || !this.ac) return; const ac = this.ac, t = ac.currentTime;
+    const openKind = kind === 'detail' ? 'Dark whisper' : (this.props.openSound ?? 'Cinematic hit'); if (kind === 'detail') kind = 'open';
+    const noise = (dur, freq, q, gain, type = 'bandpass') => { const s = ac.createBufferSource(); s.buffer = this.noiseBuf; const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q; const g = ac.createGain(); g.gain.setValueAtTime(gain, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); s.connect(f); f.connect(g); g.connect(this.master); s.start(t); s.stop(t + dur + .05); return f; };
+    const tone = (freq, dur, gain, type = 'sine', to) => { const o = ac.createOscillator(); o.type = type; o.frequency.setValueAtTime(freq, t); if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur); const g = ac.createGain(); g.gain.setValueAtTime(gain, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + dur + .05); };
+    if (kind === 'tick') { tone(1400, .05, .05); }
+    else if (kind === 'shot') {
+      // camera shutter: mirror clack (two short clicks) + soft mechanical whirr
+      const click = (at, gain, freq) => { const s = ac.createBufferSource(); s.buffer = this.noiseBuf; const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = freq; const g = ac.createGain(); g.gain.setValueAtTime(gain, at); g.gain.exponentialRampToValueAtTime(.0001, at + .03); s.connect(f); f.connect(g); g.connect(this.master); s.start(at); s.stop(at + .05); };
+      click(t, .55, 2500); click(t + .075, .4, 1800);
+      const o = ac.createOscillator(); o.type = 'square'; o.frequency.setValueAtTime(3200, t); const g = ac.createGain(); g.gain.setValueAtTime(.02, t); g.gain.exponentialRampToValueAtTime(.0001, t + .08); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + .1);
+      const w = ac.createBufferSource(); w.buffer = this.noiseBuf; const wf = ac.createBiquadFilter(); wf.type = 'bandpass'; wf.frequency.value = 900; wf.Q.value = 3; const wg = ac.createGain(); wg.gain.setValueAtTime(.0001, t + .09); wg.gain.linearRampToValueAtTime(.06, t + .13); wg.gain.exponentialRampToValueAtTime(.0001, t + .3); w.connect(wf); wf.connect(wg); wg.connect(this.master); w.start(t + .09); w.stop(t + .32);
+    }
+    else if (kind === 'open' && openKind === 'Dark whisper') {
+      // reversed breath swell into a dissonant low cluster
+      const b = ac.createBufferSource(); b.buffer = this.noiseBuf; const bf = ac.createBiquadFilter(); bf.type = 'bandpass'; bf.frequency.setValueAtTime(300, t); bf.frequency.exponentialRampToValueAtTime(1600, t + .9); bf.Q.value = 1.5; const bg = ac.createGain(); bg.gain.setValueAtTime(.0001, t); bg.gain.exponentialRampToValueAtTime(.32, t + .85); bg.gain.exponentialRampToValueAtTime(.0001, t + 1.1); b.connect(bf); bf.connect(bg); bg.connect(this.master); b.start(t); b.stop(t + 1.2);
+      [41.2, 43.65, 61.74].forEach((f, i) => { const o = ac.createOscillator(); o.type = i === 1 ? 'triangle' : 'sine'; o.frequency.value = f; const g = ac.createGain(); g.gain.setValueAtTime(.0001, t + .8); g.gain.linearRampToValueAtTime(.25, t + .95); g.gain.exponentialRampToValueAtTime(.0001, t + 2.6); o.connect(g); g.connect(this.master); o.start(t + .8); o.stop(t + 2.7); });
+    }
+    else if (kind === 'open' && openKind === 'Bell in the void') {
+      // lone detuned bell, long decay, faint sub
+      [[220, 1], [220 * 2.76, .35], [220 * 5.4, .12]].forEach(([f, a]) => { const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f; o.detune.value = (Math.random() - .5) * 12; const g = ac.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(.16 * a, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + 3.2); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + 3.3); });
+      tone(55, 2, .2, 'sine', 40);
+    }
+    else if (kind === 'open' && openKind === 'Radio signal') {
+      // static, three morse blips, then a falling carrier
+      noise(.6, 1200, .5, .12);
+      [0, .13, .26].forEach((d, i) => { const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = 880; const g = ac.createGain(); const st = t + .1 + d; g.gain.setValueAtTime(.09, st); g.gain.setValueAtTime(.09, st + (i === 2 ? .16 : .06)); g.gain.exponentialRampToValueAtTime(.0001, st + (i === 2 ? .2 : .09)); o.connect(g); g.connect(this.master); o.start(st); o.stop(st + .25); });
+      const c = ac.createOscillator(); c.type = 'sine'; c.frequency.setValueAtTime(1600, t + .55); c.frequency.exponentialRampToValueAtTime(120, t + 1.3); const cg = ac.createGain(); cg.gain.setValueAtTime(.05, t + .55); cg.gain.exponentialRampToValueAtTime(.0001, t + 1.35); c.connect(cg); cg.connect(this.master); c.start(t + .55); c.stop(t + 1.4);
+    }
+    else if (kind === 'open') {
+      // deep cinematic hit: sub impact + soft metallic chime tail
+      // warmer: rounder sub, softer transient, chime dropped an octave with triangle body + low-mid pad
+      tone(48, 1.8, .8, 'sine', 30);
+      tone(96, 1.2, .25, 'triangle', 60);
+      const k = ac.createBufferSource(); k.buffer = this.noiseBuf; const kf = ac.createBiquadFilter(); kf.type = 'lowpass'; kf.frequency.value = 120; const kg = ac.createGain(); kg.gain.setValueAtTime(.35, t); kg.gain.exponentialRampToValueAtTime(.0001, t + .3); k.connect(kf); kf.connect(kg); kg.connect(this.master); k.start(t); k.stop(t + .35);
+      const warm = ac.createBiquadFilter(); warm.type = 'lowpass'; warm.frequency.value = 900; warm.Q.value = .5; warm.connect(this.master);
+      [261.63, 329.63, 392].forEach((f, i) => { const o = ac.createOscillator(); o.type = 'triangle'; o.frequency.value = f; const g = ac.createGain(); const st = t + .08 + i * .05; g.gain.setValueAtTime(.0001, st); g.gain.linearRampToValueAtTime(.07, st + .04); g.gain.exponentialRampToValueAtTime(.0001, st + 2.2); o.connect(g); g.connect(warm); o.start(st); o.stop(st + 2.3); });
+      const pad = ac.createOscillator(); pad.type = 'sine'; pad.frequency.value = 130.81; const pg = ac.createGain(); pg.gain.setValueAtTime(.0001, t + .05); pg.gain.linearRampToValueAtTime(.09, t + .4); pg.gain.exponentialRampToValueAtTime(.0001, t + 2.4); pad.connect(pg); pg.connect(warm); pad.start(t + .05); pad.stop(t + 2.5);
+    }
+    else if (kind === 'close') { tone(160, .35, .18, 'sine', 70); tone(392, .5, .04, 'sine'); }
+    else if (kind === 'glitch') { for (let i = 0; i < 9; i++) { const s = ac.createBufferSource(); s.buffer = this.noiseBuf; const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 400 + Math.random() * 4000; f.Q.value = 2; const g = ac.createGain(); const st = t + i * .09 + Math.random() * .03; g.gain.setValueAtTime(.3, st); g.gain.exponentialRampToValueAtTime(.0001, st + .05); s.connect(f); f.connect(g); g.connect(this.master); s.start(st); s.stop(st + .1); } tone(60, 1.2, .5, 'sine', 30); }
+  }
+  startReveal() {
+    const speed = this.props.revealSpeed ?? 1;
+    this.setState({ phase: 'image' });
+    this.sfx('glitch');
+    // 0–350ms: hero image slices glitch in
+    const t0 = performance.now();
+    this._gi = setInterval(() => {
+      const p = (performance.now() - t0) / (350 * speed);
+      if (p >= 1) { clearInterval(this._gi); this.setState({ slices: [{ style: { position: 'absolute', inset: 0 } }], phase: 'title' }); this.glitchTitle(speed); return; }
+      const n = 7, slices = [];
+      for (let i = 0; i < n; i++) {
+        const top = (i / n) * 100, bot = 100 - ((i + 1) / n) * 100;
+        const dx = (Math.random() - .5) * 60 * (1 - p);
+        slices.push({ alt: Math.random() > p * 1.2, style: { position: 'absolute', inset: 0, clipPath: `inset(${top}% 0 ${bot}% 0)`, transform: `translateX(${dx}px)`, opacity: Math.random() < p + .3 ? 1 : 0, filter: Math.random() < .3 ? 'hue-rotate(40deg) brightness(1.4)' : 'none' } });
+      }
+      this.setState({ slices });
+    }, 45);
+  }
+  glitchTitle(speed) {
+    const t0 = performance.now(), dur = 650 * speed;
+    this.setState({ glitching: true });
+    this._ti = setInterval(() => {
+      const p = (performance.now() - t0) / dur;
+      if (p >= 1) { clearInterval(this._ti); this.setState({ glitching: false, titleOffsets: [] }); setTimeout(() => this.setState({ phase: 'ready' }), 120 * speed); return; }
+      const n = 6, offs = [];
+      for (let i = 0; i < n; i++) {
+        const top = (i / n) * 100, bot = 100 - ((i + 1) / n) * 100;
+        offs.push({ top, bot, dx: (Math.random() - .5) * 90 * (1 - p), show: Math.random() < 0.25 + p * 0.85, cyan: Math.random() < .35 });
+      }
+      this.setState({ titleOffsets: offs });
+    }, 55);
+  }
+  renderVals() {
+    const { phase, openKey, hot, shots, flashOn, glitching, titleOffsets } = this.state;
+    const idx = this.sectionsData.findIndex(s => s.key === openKey);
+    const open = idx >= 0 ? this.sectionsData[idx] : null;
+    const bg = (src, extra) => ({ position: 'absolute', inset: 0, backgroundImage: `url("${this.asset(src)}")`, backgroundSize: 'cover', backgroundPosition: 'center', ...extra });
+    const sections = this.sectionsData.map(s => ({ ...s, hasImg: !!s.img, noImg: !s.img, imgStyle: s.img ? bg(s.img, { filter: 'saturate(.8) brightness(.85)', backgroundPosition: s.pos || 'center' }) : {}, open: () => { this.sfx('open'); this.setState({ openKey: s.key, expanded: null, poster: null }); } }));
+    const titleVisible = phase === 'title' || phase === 'ready';
+    let titleLayers;
+    if (!titleVisible) titleLayers = [];
+    else if (glitching) titleLayers = titleOffsets.map(o => ({ style: { position: 'absolute', inset: 0, clipPath: `inset(${o.top}% 0 ${o.bot}% 0)`, transform: `translateX(${o.dx}px)`, opacity: o.show ? 1 : 0, filter: o.cyan ? 'hue-rotate(-30deg) brightness(1.5)' : 'none' } })).concat([{ style: { position: 'relative', opacity: 0 } }]);
+    else titleLayers = [{ style: { position: 'relative', animation: 'fadeIn .25s ease both' } }];
+    const wrap = i => this.sectionsData[(i + this.sectionsData.length) % this.sectionsData.length];
+    const clip = this.clip();
+    return {
+      hasImg: true,
+      slices: this.state.slices.map(s => { const c = s.alt ? this.glitchClip() : clip; return { style: s.style, imgStyle: { position: 'absolute', inset: 0, backgroundImage: `url("${this.asset(c.img)}")`, backgroundSize: 'cover', backgroundPosition: c.pos, filter: c.filter, animation: 'drift 40s ease-in-out infinite alternate' } }; }),
+      loading: phase === 'loading',
+      ready: phase === 'ready',
+      chrome: phase === 'ready',
+      titleLayers,
+      sections,
+      isOpen: !!open,
+      open: open ? { ...open, hasImg: !!open.img, noImg: !open.img, imgStyle: open.img ? bg(open.img, { filter: 'saturate(.9)' }) : {},
+        items: open.items.map((it, i) => ({ ...it, chevron: it.detail ? 'Open file →' : '', toggle: () => { if (!it.detail) return; this.sfx('detail'); this.setState({ expanded: i }); } })) } : { items: [] },
+      isHobby: !!open && open.layout === 'hobby' && (this.props.hobbyLayout ?? 'Cards') === 'List',
+      isHobbyCards: !!open && open.layout === 'hobby' && (this.props.hobbyLayout ?? 'Cards') === 'Cards',
+      isHobbyStars: !!open && open.layout === 'hobby' && (this.props.hobbyLayout ?? 'Cards') === 'Constellation',
+      hobbyCards: open && open.layout === 'hobby' ? open.items.map((it, i) => { const on = this.state.hobbyHover === i; return { ...it, onEnter: () => { this.sfx('tick'); this.setState({ hobbyHover: i, hot: true }); }, onLeave: () => this.setState({ hobbyHover: null, hot: false }),
+        cardStyle: { position: 'relative', overflow: 'hidden', border: `1px solid ${on ? 'rgba(240,201,135,.7)' : 'rgba(233,238,243,.12)'}`, transform: on ? 'translateY(-10px)' : 'translateY(0)', transition: 'transform .4s cubic-bezier(.2,.8,.2,1), border-color .3s', animation: `fadeUp .6s ${.1 + i * .08}s ease both`, background: '#07090c' },
+        cardBg: { position: 'absolute', inset: 0, backgroundImage: `url("${this.asset(open.img)}")`, backgroundSize: '500% 100%', backgroundPosition: `${i * 25}% 50%`, filter: on ? 'saturate(.9) brightness(.9)' : 'saturate(.5) brightness(.45)', transform: on ? 'scale(1.06)' : 'scale(1)', transition: 'filter .4s, transform .6s' },
+        wordStyle: { position: 'absolute', left: 16, bottom: 16, right: 16, fontFamily: 'Michroma, sans-serif', fontSize: 'clamp(13px,1.35vw,20px)', lineHeight: 1.2, textTransform: 'uppercase', color: on ? '#f0c987' : '#f4f8fc', transition: 'color .3s' },
+        noteStyle: { position: 'absolute', left: 16, right: 16, bottom: 64, fontSize: 11, lineHeight: 1.6, letterSpacing: '.05em', textTransform: 'uppercase', color: '#e3e9f0', opacity: on ? 1 : 0, transform: on ? 'translateY(0)' : 'translateY(8px)', transition: 'opacity .3s, transform .3s' } }; }) : [],
+      hobbyStars: open && open.layout === 'hobby' ? open.items.map((it, i) => { const pts = [[14, 32], [36, 62], [52, 24], [70, 58], [86, 30]]; const [x, y] = pts[i]; const on = this.state.hobbyHover === i; return { ...it, x, y, onEnter: () => { this.sfx('tick'); this.setState({ hobbyHover: i, hot: true }); }, onLeave: () => this.setState({ hobbyHover: null, hot: false }),
+        nodeStyle: { position: 'absolute', left: `${x}%`, top: `${y}%`, transform: 'translate(-50%,-50%)', animation: `fadeIn .6s ${.2 + i * .1}s ease both` },
+        dotStyle: { width: 10, height: 10, borderRadius: '50%', background: on ? '#f0c987' : '#e3e9f0', boxShadow: on ? '0 0 24px #f0c987, 0 0 60px rgba(240,201,135,.6)' : '0 0 12px rgba(227,233,240,.8)', transition: 'all .3s' },
+        labelStyle: { position: 'absolute', ...(x > 70 ? { right: 22, textAlign: 'right' } : { left: 22 }), top: -6, whiteSpace: 'nowrap', fontFamily: 'Michroma, sans-serif', fontSize: 'clamp(13px,1.3vw,20px)', textTransform: 'uppercase', color: on ? '#f0c987' : '#f4f8fc', transition: 'color .3s' },
+        noteStyle: { position: 'absolute', ...(x > 70 ? { right: 22, textAlign: 'right' } : { left: 22 }), top: 22, whiteSpace: 'nowrap', fontSize: 11, letterSpacing: '.06em', textTransform: 'uppercase', color: '#c6ced7', opacity: on ? 1 : 0, transform: on ? 'translateY(0)' : 'translateY(-6px)', transition: 'opacity .3s, transform .3s' } }; }) : [],
+      starLines: open && open.layout === 'hobby' ? [[14, 32, 36, 62], [36, 62, 52, 24], [52, 24, 70, 58], [70, 58, 86, 30]].map(([x1, y1, x2, y2]) => ({ x1: `${x1}%`, y1: `${y1}%`, x2: `${x2}%`, y2: `${y2}%` })) : [],
+      isStandard: !!open && !open.layout,
+      isContact: !!open && open.layout === 'contact',
+      contactBg: open && open.layout === 'contact' ? bg(open.img, { backgroundPosition: 'center 15%', filter: 'saturate(.9) brightness(.55)', animation: 'drift 40s ease-in-out infinite alternate' }) : {},
+      copied: this.state.copied ? 'Copied' : 'Copy email',
+      copyMail: (e) => { e.preventDefault(); e.stopPropagation(); this.sfx('tick'); try { navigator.clipboard.writeText('gunadharma201@gmail.com'); } catch (x) {} this.setState({ copied: true }); clearTimeout(this._ct); this._ct = setTimeout(() => this.setState({ copied: false }), 1600); },
+      contacts: open && open.layout === 'contact' ? open.items.map((it, i) => { const on = this.state.hobbyHover === i; return { ...it, isMail: it.icon === 'mail', isIn: it.icon === 'in', isIg: it.icon === 'ig', isBlog: it.icon === 'blog', onEnter: () => { this.sfx('tick'); this.setState({ hobbyHover: i, hot: true }); }, onLeave: () => this.setState({ hobbyHover: null, hot: false }), onClick: () => this.sfx('detail'),
+        rowStyle: { display: 'grid', gridTemplateColumns: '44px minmax(0,1fr) auto', alignItems: 'center', gap: 18, padding: 'clamp(6px,1.3vh,16px) 0', borderTop: '1px solid rgba(233,238,243,.12)', textDecoration: 'none', color: 'inherit', transform: on ? 'translateX(10px)' : 'translateX(0)', transition: 'transform .35s cubic-bezier(.2,.8,.2,1)', animation: `fadeUp .6s ${.2 + i * .1}s ease both` },
+        iconBox: { width: 44, height: 44, display: 'grid', placeItems: 'center', border: `1px solid ${on ? '#f0c987' : 'rgba(233,238,243,.25)'}`, color: on ? '#f0c987' : '#e3e9f0', boxShadow: on ? '0 0 30px rgba(240,201,135,.35)' : 'none', transition: 'all .3s' },
+        labelStyle: { fontFamily: 'Michroma, sans-serif', fontSize: 'clamp(14px,1.6vw,24px)', lineHeight: 1.1, textTransform: 'uppercase', color: on ? '#f0c987' : '#f4f8fc', transition: 'color .3s' },
+        arrowStyle: { fontSize: 22, color: '#f0c987', opacity: on ? 1 : .3, transform: on ? 'translate(4px,-4px)' : 'translate(0,0)', transition: 'all .3s' } }; }) : [],
+      isMovie: !!open && open.layout === 'movie',
+      movieBg: open && open.layout === 'movie' ? bg(open.img, { backgroundPosition: 'center 30%', filter: 'saturate(.6) brightness(.35) contrast(1.1)', animation: 'drift 40s ease-in-out infinite alternate' }) : {},
+      posterOpen: !!open && open.layout === 'movie' && this.state.poster != null && !!open.items[this.state.poster],
+      poster: (open && open.layout === 'movie' && this.state.poster != null && open.items[this.state.poster]) ? { ...open.items[this.state.poster], imgStyle: { position: 'absolute', inset: 0, backgroundImage: `url("${this.asset(open.items[this.state.poster].poster)}")`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }, glowStyle: { position: 'absolute', left: '50%', top: '50%', width: 'min(60vw, 520px)', height: '70vh', transform: 'translate(-50%,-50%)', backgroundImage: `url("${this.asset(open.items[this.state.poster].poster)}")`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(70px) saturate(1.5) brightness(.35)', opacity: .5, pointerEvents: 'none' } } : {},
+      closePoster: (e) => { if (e) e.stopPropagation(); this.sfx('close'); this.stopVoice(); this.setState({ poster: null }); },
+      posterPrev: (e) => { e.stopPropagation(); this.sfx('tick'); const n = (this.state.poster + open.items.length - 1) % open.items.length; this.setState({ poster: n }); this.playVoice(open.items[n].voice); },
+      posterNext: (e) => { e.stopPropagation(); this.sfx('tick'); const n = (this.state.poster + 1) % open.items.length; this.setState({ poster: n }); this.playVoice(open.items[n].voice); },
+      replayVoice: (e) => { e.stopPropagation(); this.playVoice(open.items[this.state.poster].voice); },
+      voiceLabel: this.state.voicePlaying ? 'Playing line' : 'Replay line',
+      voiceBarStyle: { display: 'inline-block', width: 3, height: 10, background: this.state.voicePlaying ? '#e0a458' : '#5b6673', transformOrigin: 'bottom', animation: this.state.voicePlaying ? 'bars .9s ease-in-out infinite' : 'none' },
+      movieFrames: open && open.layout === 'movie' ? open.items.map((it, i) => { const on = this.state.hobbyHover === i; return { ...it, onClick: () => { this.sfx('detail'); this.setState({ poster: i }); this.playVoice(it.voice); }, onEnter: () => { this.sfx('tick'); this.setState({ hobbyHover: i, hot: true }); }, onLeave: () => this.setState({ hobbyHover: null, hot: false }),
+        frameStyle: { position: 'relative', overflow: 'hidden', aspectRatio: '2/3', containerType: 'inline-size', background: '#0b0d11', border: `1px solid ${on ? 'rgba(240,201,135,.8)' : 'rgba(233,238,243,.14)'}`, transform: on ? 'scale(1.04)' : 'scale(1)', transition: 'transform .4s cubic-bezier(.2,.8,.2,1), border-color .3s', animation: `fadeUp .6s ${.15 + i * .1}s ease both` },
+        posterStyle: { position: 'absolute', inset: 0, backgroundImage: `url("${this.asset(it.poster || open.img)}")`, backgroundSize: 'cover', backgroundPosition: 'center top', filter: on ? 'saturate(1) brightness(1)' : 'saturate(.55) brightness(.6)', transform: on ? 'scale(1.04)' : 'scale(1)', transition: 'filter .4s, transform .6s' },
+        titleStyle: { position: 'absolute', left: 8, right: 8, bottom: 10, fontFamily: 'Michroma, sans-serif', fontSize: 'min(16px, 6.6cqw)', lineHeight: 1.2, letterSpacing: '-.01em', textTransform: 'uppercase', overflowWrap: 'normal', color: on ? '#f0c987' : '#f4f8fc', transition: 'color .3s' },
+        noteStyle: { position: 'absolute', left: 8, right: 8, bottom: 'calc(min(16px, 6.6cqw) * 2.4 + 20px)', fontSize: 'clamp(9px,.85vw,11px)', lineHeight: 1.55, letterSpacing: '.03em', color: '#e3e9f0', fontStyle: 'italic', opacity: on ? 1 : 0, transform: on ? 'translateY(0)' : 'translateY(8px)', transition: 'opacity .3s, transform .3s' } }; }) : [],
+      hobbyBg: open && open.layout === 'hobby' ? bg(open.img, { filter: 'saturate(.7) brightness(.45)', animation: 'drift 40s ease-in-out infinite alternate' }) : {},
+      hobbyItems: open && open.layout === 'hobby' ? open.items.map((it, i) => ({ ...it, active: this.state.hobbyHover === i, noteStyle: { opacity: this.state.hobbyHover === i ? 1 : 0, transform: this.state.hobbyHover === i ? 'translateX(0)' : 'translateX(-10px)', transition: 'opacity .25s, transform .25s' }, wordStyle: { color: this.state.hobbyHover === i ? '#f0c987' : '#f4f8fc', transition: 'color .25s, letter-spacing .35s', letterSpacing: this.state.hobbyHover === i ? '.06em' : '.01em', animation: `fadeUp .6s ${.15 + i * .08}s ease both` }, onEnter: () => { this.sfx('tick'); this.setState({ hobbyHover: i, hot: true }); }, onLeave: () => this.setState({ hobbyHover: null, hot: false }) })) : [],
+      modalOpen: !!open && this.state.expanded != null && !!open.items[this.state.expanded],
+      modal: (open && this.state.expanded != null && open.items[this.state.expanded]) ? { ...open.items[this.state.expanded], imgStyle: bg(open.items[this.state.expanded].img, { filter: 'saturate(.85) contrast(1.05)' }), tags: open.items[this.state.expanded].tags || [] } : { tags: [] },
+      closeModal: (e) => { if (e) e.stopPropagation(); this.sfx('close'); this.setState({ expanded: null }); },
+      stop: (e) => e.stopPropagation(),
+      prevLabel: open ? wrap(idx - 1).label : '', nextLabel: open ? wrap(idx + 1).label : '',
+      prev: () => { this.sfx('open'); this.setState({ openKey: wrap(idx - 1).key, expanded: null }); },
+      next: () => { this.sfx('open'); this.setState({ openKey: wrap(idx + 1).key, expanded: null }); },
+      close: () => { this.sfx('close'); this.stopVoice(); this.setState({ openKey: null }); },
+      hotOn: () => { this.sfx('tick'); this.setState({ hot: true }); }, hotOff: () => this.setState({ hot: false }),
+      toggleSound: (e) => { e.stopPropagation(); this.setSound(!this.state.sound); },
+      soundLabel: this.state.sound ? 'Sound on' : 'Sound off',
+      soundBarStyle: { display: 'inline-block', width: 3, height: 10, background: this.state.sound ? '#e0a458' : '#5b6673', transformOrigin: 'bottom', animation: this.state.sound ? 'bars 1.1s ease-in-out infinite' : 'none' },
+      hotScale: hot ? 'scale(1.6) rotate(45deg)' : 'scale(1) rotate(0deg)',
+      cursorRef: this.cursorRef,
+      onMove: (e) => { const el = this.cursorRef.current; if (el) el.style.transform = `translate(${e.clientX - 17}px,${e.clientY - 17}px)`; },
+      onShoot: (e) => {
+        if (phase !== 'ready') return;
+        this.sfx('shot');
+        if (!(this.props.shootFx ?? true)) return;
+        const id = Date.now() + Math.random();
+        const shot = { id, style: { position: 'absolute', left: e.clientX, top: e.clientY, width: 40, height: 40, borderRadius: '50%', border: '2px solid #f0c987', boxShadow: '0 0 18px rgba(240,201,135,.8)', pointerEvents: 'none', zIndex: 65, animation: 'shoot .45s cubic-bezier(.2,.7,.3,1) both' } };
+        this.setState(s => ({ shots: [...s.shots, shot], flashOn: true }));
+        setTimeout(() => this.setState({ flashOn: false }), 200);
+        setTimeout(() => this.setState(s => ({ shots: s.shots.filter(x => x.id !== id) })), 500);
+      },
+      shots, flashOn
+    };
+  }
+}
+</script>
+</body>
+</html>
