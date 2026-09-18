@@ -19,8 +19,10 @@ npm run dev
 
 ## Media
 
-Everything the site needs lives in `public/media/` and is committed, except the two hero
-backgrounds — free-to-use Pexels photos that `npm run fetch:media` pulls in:
+Everything the site needs lives in `public/media/`. The two hero backgrounds are
+free-to-use Pexels photos pulled in by `npm run fetch:media`, which also runs
+automatically before `npm run build`; drop your own files at those paths to override
+them, and they will be committed like the rest of the media:
 
 | File | Used as |
 | --- | --- |

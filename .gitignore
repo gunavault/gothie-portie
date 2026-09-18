@@ -6,6 +6,3 @@ out
 next-env.d.ts
 tsconfig.tsbuildinfo
 
-# fetched by `npm run fetch:media`
-/public/media/hero-main.jpg
-/public/media/hero-glitch.jpg
