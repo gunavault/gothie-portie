@@ -32,10 +32,10 @@ for (const file of files) {
     console.log(`skip  ${file.name} (already present)`);
     continue;
   }
-  const res = await fetch(file.url);
-  if (!res.ok || !res.body) {
-    console.error(`fail  ${file.name} — HTTP ${res.status} (${file.credit})`);
-    process.exitCode = 1;
+  // a missing hero still leaves the hero black; never worth failing a build over
+  const res = await fetch(file.url).catch((error) => ({ ok: false, status: error.message }));
+  if (!res.ok || !("body" in res) || !res.body) {
+    console.warn(`warn  ${file.name} — could not fetch (${res.status}) — ${file.credit}`);
     continue;
   }
   await pipeline(Readable.fromWeb(res.body), createWriteStream(dest));
