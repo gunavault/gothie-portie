@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/fetch-media.mjs",
     "build": "next build",
-    "start": "next start",
-    "fetch:media": "node scripts/fetch-media.mjs"
+    "start": "next start"
   },
   "dependencies": {
     "next": "^15.5.4",

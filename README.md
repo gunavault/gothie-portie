@@ -13,25 +13,26 @@ reference — see [`project/HANDOFF.md`](project/HANDOFF.md).
 
 ```bash
 npm install
-npm run fetch:media   # downloads the two hero stills (see below)
 npm run dev
 ```
 
 ## Media
 
-Everything the site needs lives in `public/media/`. The two hero backgrounds are
-free-to-use Pexels photos pulled in by `npm run fetch:media`, which also runs
-automatically before `npm run build`; drop your own files at those paths to override
-them, and they will be committed like the rest of the media:
+Everything the site needs is committed to `public/media/` — section images, movie
+posters, voice lines and the two hero backgrounds:
 
 | File | Used as |
 | --- | --- |
 | `hero-main.jpg` | the hero background (silhouette in spotlight) |
 | `hero-glitch.jpg` | flickers through the intro's glitch slices (foggy street) |
 
-Without them the hero renders black; nothing else is affected. Fonts (Michroma, Space
-Mono) are self-hosted at build time by `next/font`, so the site makes no third-party
-requests at runtime.
+Swapping either one is a drop-in replacement; if the new image crops badly, adjust its
+`pos` in `lib/config.ts`. The hero stills are free-to-use Pexels photos ([30681569],
+[29494279]). Fonts (Michroma, Space Mono) are self-hosted at build time by `next/font`,
+so the site makes no third-party requests at runtime.
+
+[30681569]: https://www.pexels.com/photo/30681569/
+[29494279]: https://www.pexels.com/photo/29494279/
 
 ## Tuning
 
