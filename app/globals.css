@@ -1,0 +1,159 @@
+:root {
+  --ink: #e9eef3;
+  --bright: #eaf6ff;
+  --white: #f4f8fc;
+  --mute: #aeb8c4;
+  --soft: #c6ced7;
+  --dim: #7f8b98;
+  --gold: #f0c987;
+  --ember: #e0a458;
+  --void: #050607;
+  --panel: #0a0c10;
+  --line: rgba(233, 238, 243, 0.12);
+  --hairline: rgba(233, 238, 243, 0.1);
+  --edge: rgba(233, 238, 243, 0.25);
+  --edge-strong: rgba(233, 238, 243, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  overflow: hidden;
+}
+
+body,
+button,
+a {
+  cursor: none;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--bright);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shoot {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 1;
+    border-width: 3px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+@keyframes flash {
+  0% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scan {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes slideL {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1.04) translate(-1.5%, 0);
+  }
+  to {
+    transform: scale(1.1) translate(1.5%, -1%);
+  }
+}
+
+@keyframes dossier {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+    clip-path: inset(0 0 100% 0);
+  }
+  45% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes bars {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@media (pointer: coarse) {
+  body,
+  button,
+  a {
+    cursor: auto;
+  }
+}

@@ -1,0 +1,114 @@
+.cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+  z-index: 70;
+  transform: translate(-100px, -100px);
+  will-change: transform;
+}
+
+.reticle,
+.reticleHot {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.18s ease, opacity 0.18s;
+  transform: scale(1) rotate(0deg);
+}
+
+.reticleHot {
+  transform: scale(1.6) rotate(45deg);
+}
+
+.cornerTl,
+.cornerTr,
+.cornerBl,
+.cornerBr {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+}
+
+.cornerTl {
+  left: 0;
+  top: 0;
+  border-left: 1.5px solid var(--bright);
+  border-top: 1.5px solid var(--bright);
+}
+
+.cornerTr {
+  right: 0;
+  top: 0;
+  border-right: 1.5px solid var(--bright);
+  border-top: 1.5px solid var(--bright);
+}
+
+.cornerBl {
+  left: 0;
+  bottom: 0;
+  border-left: 1.5px solid var(--bright);
+  border-bottom: 1.5px solid var(--bright);
+}
+
+.cornerBr {
+  right: 0;
+  bottom: 0;
+  border-right: 1.5px solid var(--bright);
+  border-bottom: 1.5px solid var(--bright);
+}
+
+.pip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px;
+  background: var(--ember);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--ember);
+}
+
+.tickTop,
+.tickBottom,
+.tickLeft,
+.tickRight {
+  position: absolute;
+  background: rgba(234, 246, 255, 0.7);
+}
+
+.tickTop {
+  left: 50%;
+  top: -6px;
+  width: 1px;
+  height: 6px;
+}
+
+.tickBottom {
+  left: 50%;
+  bottom: -6px;
+  width: 1px;
+  height: 6px;
+}
+
+.tickLeft {
+  top: 50%;
+  left: -6px;
+  height: 1px;
+  width: 6px;
+}
+
+.tickRight {
+  top: 50%;
+  right: -6px;
+  height: 1px;
+  width: 6px;
+}
+
+@media (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
+}

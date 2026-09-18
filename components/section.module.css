@@ -1,0 +1,224 @@
+.takeover {
+  position: absolute;
+  inset: 0;
+  background: var(--void);
+  animation: fadeIn 0.35s ease both;
+}
+
+.header,
+.headerRaised,
+.footer,
+.footerRaised {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.header,
+.headerRaised {
+  top: 22px;
+}
+
+.footer,
+.footerRaised {
+  bottom: 22px;
+}
+
+/* over the letterbox bars in the movie layout */
+.headerRaised,
+.footerRaised {
+  z-index: 3;
+}
+
+.close {
+  background: none;
+  border: 1px solid var(--edge-strong);
+  padding: 6px 12px;
+  color: var(--bright);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.close:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.step {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.step:hover {
+  color: var(--bright);
+}
+
+/* --- About / Work --- */
+
+.split {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.image {
+  position: relative;
+  overflow: hidden;
+  animation: slideL 0.7s cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  filter: saturate(0.9);
+}
+
+.fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 60%, var(--void) 100%);
+}
+
+.column {
+  position: relative;
+  padding: 72px 32px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  margin-left: -28%;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(34px, 5.6vw, 88px);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: #f2f9ff;
+  text-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+
+.body {
+  margin-top: 36px;
+  max-width: 440px;
+  font-size: 12px;
+  line-height: 1.75;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--soft);
+  text-wrap: pretty;
+  animation: fadeUp 0.6s 0.45s ease both;
+}
+
+.items {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  animation: fadeUp 0.6s 0.55s ease both;
+}
+
+.rowWrap {
+  border-top: 1px solid var(--hairline);
+}
+
+.row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: baseline;
+  padding: 9px 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: left;
+}
+
+.row:hover {
+  color: var(--bright);
+}
+
+.rowKey {
+  color: var(--ember);
+}
+
+.rowValue {
+  color: var(--soft);
+}
+
+.rowAction {
+  color: var(--ember);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .header,
+  .headerRaised {
+    top: 14px;
+    left: 16px;
+    right: 16px;
+    z-index: 5;
+  }
+
+  .footer,
+  .footerRaised {
+    bottom: 14px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 38vh minmax(0, 1fr);
+  }
+
+  .image {
+    animation: none;
+  }
+
+  .column {
+    /* top padding clears the absolutely positioned header row */
+    padding: 44px 16px 64px;
+    justify-content: flex-start;
+    overflow: auto;
+    min-height: 0;
+  }
+
+  .title {
+    margin-left: 0;
+    margin-top: 8px;
+    font-size: clamp(26px, 8vw, 40px);
+  }
+
+  .body {
+    margin-top: 16px;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}

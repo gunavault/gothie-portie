@@ -1,0 +1,167 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.7) brightness(0.45);
+  animation: drift 40s ease-in-out infinite alternate;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(5, 6, 7, 0.75) 70%,
+    var(--void) 100%
+  );
+}
+
+.hint {
+  position: absolute;
+  left: 32px;
+  top: 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeUp 0.5s ease both;
+}
+
+.title {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(26px, 3.6vw, 54px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
+}
+
+.sub {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.stars {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 16%;
+  bottom: 16%;
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: fadeIn 1.2s 0.4s ease both;
+}
+
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  animation: fadeIn 0.6s ease both;
+}
+
+/* widens the pointer target around a 10px star */
+.target {
+  padding: 12px;
+  margin: -12px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e3e9f0;
+  box-shadow: 0 0 12px rgba(227, 233, 240, 0.8);
+  transition: all 0.3s;
+}
+
+.node:hover .dot {
+  background: var(--gold);
+  box-shadow: 0 0 24px var(--gold), 0 0 60px rgba(240, 201, 135, 0.6);
+}
+
+.label {
+  position: absolute;
+  top: -6px;
+  left: 22px;
+  white-space: nowrap;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(13px, 1.3vw, 20px);
+  text-transform: uppercase;
+  color: var(--white);
+  transition: color 0.3s;
+}
+
+.note {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  /* invisible until hover — must never block a neighbouring star */
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--soft);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.flip .label,
+.flip .note {
+  left: auto;
+  right: 22px;
+  text-align: right;
+}
+
+.node:hover .label {
+  color: var(--gold);
+}
+
+.node:hover .note {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 760px) {
+  .hint {
+    left: 16px;
+    right: 16px;
+    top: 58px;
+  }
+
+  .title {
+    font-size: clamp(22px, 7vw, 34px);
+  }
+
+  .stars {
+    left: 10%;
+    right: 10%;
+    top: 30%;
+    bottom: 22%;
+  }
+
+  .label {
+    font-size: 13px;
+  }
+
+  .note {
+    white-space: normal;
+    width: 150px;
+    font-size: 10px;
+  }
+}
