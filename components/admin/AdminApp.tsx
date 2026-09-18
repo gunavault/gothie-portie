@@ -70,7 +70,9 @@ export default function AdminApp({
     const { error } = await saveContent(content);
     setSaving(false);
     if (error) {
-      flash("Save failed — check the connection");
+      // the database's own message — "function does not exist", an RLS denial —
+      // is the only thing that tells you what to fix
+      flash(`Save failed — ${error}`);
       return;
     }
     setDirty(false);
@@ -82,7 +84,7 @@ export default function AdminApp({
     if (!confirm("Reset all content to the built-in defaults?")) return;
     const result = await resetContent();
     if (result.error || !("content" in result)) {
-      flash("Reset failed");
+      flash(`Reset failed — ${result.error ?? "no content returned"}`);
       return;
     }
     setContent(result.content);

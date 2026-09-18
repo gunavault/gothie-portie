@@ -9,7 +9,10 @@ import { serverClient } from "@/lib/supabase-server";
 async function write(content: AdminContent) {
   const db = await serverClient();
   const { error } = await db.rpc("save_portfolio", { payload: content });
-  if (error) return { error: error.message };
+  if (error) {
+    console.error("save_portfolio failed", error);
+    return { error: error.message };
+  }
 
   revalidateTag(PORTFOLIO_TAG);
   revalidatePath("/");

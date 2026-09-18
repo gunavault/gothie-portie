@@ -668,6 +668,9 @@
   color: var(--gold);
   animation: toast 2.2s ease both;
   pointer-events: none;
+  max-width: min(560px, 90vw);
+  line-height: 1.6;
+  text-align: center;
 }
 
 @keyframes toast {
