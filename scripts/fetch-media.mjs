@@ -33,7 +33,10 @@ for (const file of files) {
     continue;
   }
   // a missing hero still leaves the hero black; never worth failing a build over
-  const res = await fetch(file.url).catch((error) => ({ ok: false, status: error.message }));
+  const res = await fetch(file.url, {
+    // some CDNs refuse a bare runtime user-agent
+    headers: { "user-agent": "Mozilla/5.0 (compatible; gothie-portie build)" },
+  }).catch((error) => ({ ok: false, status: error.message }));
   if (!res.ok || !("body" in res) || !res.body) {
     console.warn(`warn  ${file.name} — could not fetch (${res.status}) — ${file.credit}`);
     continue;
