@@ -20,8 +20,9 @@ export type OpenSound =
 export const hero = {
   main: {
     img: "/media/hero-main.jpg",
-    // portrait source: pulled up so the spotlight beam stays above the figure
-    pos: "center 12%",
+    // portrait source on a landscape viewport: framed on the face and shoulders,
+    // which is the most of the figure a 16:9 screen can hold
+    pos: "center 40%",
     filter: "saturate(.6) contrast(1.1) brightness(.85)",
   },
   /** Flickers through the intro's glitch slices before the hero settles. */
