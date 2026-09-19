@@ -1,0 +1,36 @@
+name: Migrate database
+
+# Vercel builds the site from the same push; this applies the schema alongside it.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/**"
+      - ".github/workflows/migrate.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: migrate
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply migrations
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$DB_URL" ]; then
+            echo "SUPABASE_DB_URL is not set — add it under Settings → Secrets → Actions" >&2
+            exit 1
+          fi
+          # Every migration is re-runnable, so the whole folder is replayed in
+          # order; --single-transaction rolls a file back if any statement fails.
+          for file in supabase/migrations/*.sql; do
+            echo "→ $file"
+            psql "$DB_URL" -v ON_ERROR_STOP=1 --single-transaction -q -f "$file"
+          done
+          echo "Migrations applied"

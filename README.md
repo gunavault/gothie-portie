@@ -44,13 +44,30 @@ Until the environment variables are set the site serves the seed content committ
 `lib/content.ts`, and `/admin` says what is missing rather than erroring. To set it up:
 
 1. Create a Supabase project.
-2. Run the files in `supabase/migrations/` in order, in the SQL editor: the schema and
-   seed content, the `save_portfolio` function, and the `media` storage bucket.
-3. Under **Authentication → Users**, add yourself. That is the only account that can
-   sign in; there is no sign-up route.
+2. Apply `supabase/migrations/` — see below. On a fresh project you can also paste the
+   files into the SQL editor in filename order.
+3. Under **Authentication → Users**, add yourself with **Auto Confirm User** ticked.
+   That is the only account that can sign in; there is no sign-up route.
 4. Copy `.env.example` to `.env.local` for local work, and set the same two variables
    in Vercel's project settings. Both are the publishable values from **Settings → API**
    — the `service_role` key is not used anywhere and should not be added.
+   `NEXT_PUBLIC_*` values are compiled in, so redeploy after adding them.
+
+### Migrations
+
+Pushing to `main` runs `.github/workflows/migrate.yml`, which replays every file in
+`supabase/migrations/` against the database in filename order. It needs one repository
+secret, **`SUPABASE_DB_URL`** (Settings → Secrets and variables → Actions):
+
+Take it from Supabase under **Connect → Connection string → URI**, and use the
+**session pooler** host (`aws-…pooler.supabase.com`). The direct `db.<ref>.supabase.co`
+host is IPv6-only and GitHub's runners are IPv4, so it will hang. The string contains
+your database password — it belongs in the secret, nowhere else.
+
+Because the whole folder is replayed on every run, **each migration must be
+re-runnable**: `create table if not exists`, `drop policy if exists` before `create
+policy`, `create or replace function`, and seed inserts guarded by a row check so an
+edit made in the admin is never overwritten.
 
 The admin edits About, Work, Hobby and Movie. Work images, movie posters and voice
 lines upload to the `media` bucket (images are downscaled in the browser first); the
