@@ -52,7 +52,9 @@
   position: absolute;
   left: 32px;
   right: 32px;
-  bottom: 200px;
+  /* the rail's thumbnails are 16:7 across five columns, so it grows with the
+     viewport — a fixed offset collides with it on a wide screen */
+  bottom: calc((100vw - 88px) / 5 * 0.4375 + 84px);
   display: flex;
   flex-direction: column;
   gap: 18px;
