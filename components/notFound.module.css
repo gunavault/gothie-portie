@@ -1,0 +1,251 @@
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #05070c;
+  cursor: auto;
+}
+
+.monolith {
+  position: absolute;
+  inset: 0;
+  background-image: url("/media/404-monolith.jpg");
+  background-size: cover;
+  background-position: center 30%;
+  filter: saturate(0.9) contrast(1.06);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 7, 12, 0.2) 0%,
+    rgba(5, 7, 12, 0.1) 38%,
+    rgba(5, 7, 12, 0.88) 100%
+  );
+}
+
+.flare {
+  position: absolute;
+  left: 47%;
+  top: 19%;
+  width: 340px;
+  height: 340px;
+  margin: -170px 0 0 -170px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 244, 214, 0.5) 0%,
+    rgba(255, 236, 190, 0.12) 38%,
+    transparent 68%
+  );
+  animation: flare 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+
+.scanBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(180deg, transparent, rgba(240, 201, 135, 0.05), transparent);
+  animation: scan 11s linear infinite;
+  pointer-events: none;
+}
+
+.header {
+  position: absolute;
+  top: 26px;
+  left: 34px;
+  right: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.logo {
+  font-family: var(--font-display), sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--bright);
+}
+
+.dot {
+  color: var(--gold);
+}
+
+.signal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.beacon {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+.foot {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  bottom: 34px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 640px;
+}
+
+.number {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(84px, 11vw, 150px);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  color: #f6f9fc;
+  text-shadow: 0 20px 70px rgba(0, 0, 0, 0.85);
+  animation: fadeUp 0.7s ease both;
+}
+
+.lede {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: var(--gold);
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+.body {
+  max-width: 420px;
+  font-size: 12px;
+  line-height: 1.85;
+  letter-spacing: 0.06em;
+  color: var(--soft);
+  text-wrap: pretty;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+
+.primary,
+.secondary {
+  padding: 13px 22px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.primary {
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--panel);
+  font-weight: 700;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.primary:hover {
+  color: var(--panel);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(240, 201, 135, 0.28);
+}
+
+.secondary {
+  border: 1px solid var(--edge-strong);
+  color: var(--ink);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  text-align: right;
+  max-width: 280px;
+  overflow-wrap: anywhere;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8d97a3;
+}
+
+.metaLead {
+  color: var(--gold);
+}
+
+@keyframes flare {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+@media (max-width: 760px) {
+  .header {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+  }
+
+  .foot {
+    left: 18px;
+    right: 18px;
+    bottom: 22px;
+    gap: 22px;
+  }
+
+  .number {
+    font-size: clamp(84px, 26vw, 130px);
+  }
+
+  .lede {
+    font-size: clamp(15px, 4.6vw, 19px);
+  }
+
+  .meta {
+    text-align: left;
+  }
+
+  .flare {
+    width: 200px;
+    height: 200px;
+    margin: -100px 0 0 -100px;
+  }
+}

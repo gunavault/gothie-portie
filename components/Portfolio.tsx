@@ -218,6 +218,13 @@ export default function Portfolio({ sections }: { sections: Section[] }) {
     };
   }, [sfx, sections]);
 
+  // the 404 page links straight to a section, e.g. /#contact
+  useEffect(() => {
+    if (phase !== "ready") return;
+    const key = window.location.hash.slice(1);
+    if (key && sections.some((section) => section.key === key)) setOpenKey(key);
+  }, [phase, sections]);
+
   const closeSection = useCallback(() => {
     sfx("close");
     stopVoice();
