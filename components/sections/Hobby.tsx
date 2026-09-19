@@ -29,6 +29,21 @@ const narrow = [
   [24, 92],
 ];
 
+/**
+ * The composition above is drawn for five stars. More than that — the admin can
+ * add any number — gets fanned along the same zig-zag rather than reading past
+ * the end of the list, which used to blank the whole section.
+ */
+function starField(count: number, isNarrow: boolean) {
+  const preset = isNarrow ? narrow : wide;
+  if (count <= preset.length) return preset.slice(0, count);
+  // two columns running down the field: side by side, long labels would collide
+  return Array.from({ length: count }, (_, i) => {
+    const along = i / (count - 1);
+    return isNarrow ? [i % 2 ? 66 : 16, 4 + along * 90] : [i % 2 ? 58 : 20, 6 + along * 88];
+  });
+}
+
 const query = "(max-width: 760px)";
 const subscribe = (notify: () => void) => {
   const media = window.matchMedia(query);
@@ -43,7 +58,7 @@ export default function Hobby({ section, onClose, onStep }: Props) {
     () => window.matchMedia(query).matches,
     () => false,
   );
-  const points = isNarrow ? narrow : wide;
+  const points = starField(section.items.length, isNarrow);
 
   return (
     <div className={s.stage}>

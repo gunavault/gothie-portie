@@ -77,7 +77,8 @@ export default function HobbyTab({ content, edit }: Props) {
       </button>
 
       <div className={s.note}>
-        The constellation places up to 5 stars; extra hobbies are stored but not shown.
+        Five hobbies keep the constellation as designed; beyond that the extra stars
+        are spread along the same path.
       </div>
     </div>
   );
