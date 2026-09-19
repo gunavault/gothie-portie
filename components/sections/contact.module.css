@@ -234,7 +234,7 @@
 @media (max-width: 760px) {
   .stage {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 30vh minmax(0, 1fr);
+    grid-template-rows: 30dvh minmax(0, 1fr);
   }
 
   .image {
@@ -247,8 +247,7 @@
   }
 
   .column {
-    /* top padding clears the absolutely positioned header row */
-    padding: 44px 16px 64px;
+    padding: 0 16px 28px;
     justify-content: flex-start;
     overflow: auto;
   }

@@ -175,7 +175,26 @@
 }
 
 @media (max-width: 760px) {
-  .header,
+  /* The column scrolls on a phone, and an absolutely positioned footer scrolls
+     with it — straight into the middle of the text. In flow instead: the header
+     sticks to the top so Close stays reachable, the footer ends the content. */
+  .header {
+    position: sticky;
+    top: 0;
+    left: auto;
+    right: auto;
+    /* the column has no top padding, so nothing scrolls through above this */
+    padding: 14px 0 10px;
+    background: var(--void);
+    z-index: 5;
+  }
+
+  .footer {
+    position: static;
+    margin-top: 28px;
+  }
+
+  /* the movie layout's chrome sits outside the scroller, so it stays pinned */
   .headerRaised {
     top: 14px;
     left: 16px;
@@ -183,7 +202,6 @@
     z-index: 5;
   }
 
-  .footer,
   .footerRaised {
     bottom: 14px;
     left: 16px;
@@ -192,7 +210,8 @@
 
   .split {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 38vh minmax(0, 1fr);
+    /* dvh, so a phone's collapsing toolbar cannot push the column off-screen */
+    grid-template-rows: 38dvh minmax(0, 1fr);
   }
 
   .image {
@@ -200,8 +219,7 @@
   }
 
   .column {
-    /* top padding clears the absolutely positioned header row */
-    padding: 44px 16px 64px;
+    padding: 0 16px 28px;
     justify-content: flex-start;
     overflow: auto;
     min-height: 0;
