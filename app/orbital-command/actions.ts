@@ -8,6 +8,14 @@ import { serverClient } from "@/lib/supabase-server";
 
 async function write(content: AdminContent) {
   const db = await serverClient();
+  const {
+    data: { user },
+  } = await db.auth.getUser();
+
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
   const { error } = await db.rpc("save_portfolio", { payload: content });
   if (error) {
     console.error("save_portfolio failed", error);
