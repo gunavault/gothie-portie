@@ -4,11 +4,15 @@ import { getAdminContent } from "@/lib/admin";
 import { supabaseConfigured } from "@/lib/supabase";
 import { serverClient } from "@/lib/supabase-server";
 
-export const metadata = { title: "GD.26 Admin" };
+// keeps the console out of search results
+export const metadata = {
+  title: "GD.26 Admin",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminPage() {
   // the login screen explains what is missing; this page cannot run without it
-  if (!supabaseConfigured) redirect("/admin/login");
+  if (!supabaseConfigured) redirect("/orbital-command/login");
 
   const db = await serverClient();
   const {

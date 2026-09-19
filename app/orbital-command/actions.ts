@@ -35,11 +35,11 @@ export async function signIn(_state: unknown, formData: FormData) {
     password: String(formData.get("password") ?? ""),
   });
   if (error) return { error: true };
-  redirect("/admin");
+  redirect("/orbital-command");
 }
 
 export async function signOut() {
   const db = await serverClient();
   await db.auth.signOut();
-  redirect("/admin/login");
+  redirect("/orbital-command/login");
 }

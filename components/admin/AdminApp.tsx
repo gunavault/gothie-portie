@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { resetContent, saveContent, signOut } from "@/app/admin/actions";
+import { resetContent, saveContent, signOut } from "@/app/orbital-command/actions";
 import type { AdminContent } from "@/lib/admin";
 import AboutTab from "./AboutTab";
 import WorkTab from "./WorkTab";

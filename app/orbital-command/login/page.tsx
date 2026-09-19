@@ -1,6 +1,10 @@
 import LoginForm from "@/components/admin/LoginForm";
 
-export const metadata = { title: "GD.26 Admin" };
+// keeps the console out of search results
+export const metadata = {
+  title: "GD.26 Admin",
+  robots: { index: false, follow: false },
+};
 
 export default function LoginPage() {
   const configured = Boolean(

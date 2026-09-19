@@ -26,21 +26,21 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const onLogin = pathname === "/admin/login";
+  const onLogin = pathname === "/orbital-command/login";
 
   if (!user && !onLogin) {
     const login = request.nextUrl.clone();
-    login.pathname = "/admin/login";
+    login.pathname = "/orbital-command/login";
     return NextResponse.redirect(login);
   }
 
   if (user && onLogin) {
     const admin = request.nextUrl.clone();
-    admin.pathname = "/admin";
+    admin.pathname = "/orbital-command";
     return NextResponse.redirect(admin);
   }
 
   return response;
 }
 
-export const config = { matcher: ["/admin/:path*"] };
+export const config = { matcher: ["/orbital-command/:path*"] };

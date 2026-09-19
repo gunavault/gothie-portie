@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { signIn } from "@/app/admin/actions";
+import { signIn } from "@/app/orbital-command/actions";
 import s from "./login.module.css";
 
 export default function LoginForm({ configured }: { configured: boolean }) {

@@ -42,12 +42,12 @@ so the site makes no third-party requests at runtime.
 
 ## Content and the admin
 
-Content lives in Supabase and is edited at `/admin`, behind Supabase Auth. The page
+Content lives in Supabase and is edited at `/orbital-command`, behind Supabase Auth. The page
 reads the database on the server and caches the result for five minutes; saving in the
 admin revalidates it immediately, so there is no redeploy in the loop.
 
 Until the environment variables are set the site serves the seed content committed in
-`lib/content.ts`, and `/admin` says what is missing rather than erroring. To set it up:
+`lib/content.ts`, and `/orbital-command` says what is missing rather than erroring. To set it up:
 
 1. Create a Supabase project.
 2. Apply `supabase/migrations/` — see below. On a fresh project you can also paste the
