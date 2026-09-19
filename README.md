@@ -1,9 +1,15 @@
 # Guna Dharma — Portfolio
 
-A single-screen portfolio: black until everything loads, then a glitch reveal into the
-hero, a crosshair cursor with a camera-shutter click, and five full-screen section
-takeovers (About, Work, Hobby, Movie, Contact). Every sound except the movie voice
-lines is synthesized in the browser.
+A single-screen portfolio: a "HOLD ON" loader that draws itself while every image,
+voice line and font downloads, then a glitch reveal into the hero, a crosshair cursor
+with a camera-shutter click, and five full-screen section takeovers (About, Work,
+Hobby, Movie, Contact). Every sound except the movie voice lines is synthesized in the
+browser.
+
+The loader's letterforms are Michroma outlines extracted to SVG paths
+(`components/holdOn.ts`) and stroked on with anime.js `createDrawable`. Nothing is
+shown until the last asset is in, with a 12-second ceiling so a stalled file cannot
+trap a visitor on the loader.
 
 Built with Next.js (App Router) + TypeScript, from the Claude Design prototype in
 [`project/`](project/). The prototype and its chat transcripts are kept as the design

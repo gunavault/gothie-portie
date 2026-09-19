@@ -1,0 +1,97 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  overflow: hidden;
+  animation: fadeIn 0.4s ease both;
+}
+
+/* the same lit haze the hero sits in, so the cut to the site is not a jump */
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 42%, #14171e 0%, #05060a 55%, #000 100%);
+}
+
+.word {
+  position: relative;
+  width: min(62vw, 560px);
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: #eef4f9;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 18px rgba(234, 246, 255, 0.25));
+}
+
+.status {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.beacon {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--ember);
+  animation: blink 1.6s ease-in-out infinite;
+}
+
+.count {
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  position: relative;
+  width: min(62vw, 560px);
+  height: 1px;
+  background: rgba(233, 238, 243, 0.14);
+  overflow: hidden;
+}
+
+.bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--ember), var(--gold));
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .word,
+  .track {
+    width: 78vw;
+  }
+
+  .status {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+}

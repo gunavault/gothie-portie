@@ -10,6 +10,7 @@ import Nav from "./Nav";
 import Rail from "./Rail";
 import Takeover from "./Takeover";
 import Cursor from "./Cursor";
+import Loader from "./Loader";
 import s from "./portfolio.module.css";
 
 type Phase = "loading" | "image" | "title" | "ready";
@@ -17,12 +18,22 @@ type Shot = { id: number; x: number; y: number };
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/** Nothing is shown until everything is in, so a stalled asset must not trap anyone. */
+const LOAD_CEILING = 12000;
+
 const preloadImage = (src: string) =>
   new Promise<void>((resolve) => {
     const img = new Image();
     img.onload = img.onerror = () => resolve();
     img.src = src;
   });
+
+// pulls the whole body so the file is in the HTTP cache before a voice line plays
+const preloadAudio = async (src: string) => {
+  try {
+    await (await fetch(src)).arrayBuffer();
+  } catch {}
+};
 
 export default function Portfolio({ sections }: { sections: Section[] }) {
   const [phase, setPhase] = useState<Phase>(config.skipIntro ? "ready" : "loading");
@@ -37,6 +48,7 @@ export default function Portfolio({ sections }: { sections: Section[] }) {
   const [flash, setFlash] = useState(false);
   const [sound, setSound] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const cursorRef = useRef<HTMLDivElement>(null);
   const voiceRef = useRef<HTMLAudioElement | null>(null);
@@ -109,7 +121,7 @@ export default function Portfolio({ sections }: { sections: Section[] }) {
     return () => sound?.dispose();
   }, []);
 
-  // black until every image and font is in, then the glitch reveal
+  // held on the loader until every image, voice line and font is in
   useEffect(() => {
     if (config.skipIntro) return;
     let cancelled = false;
@@ -176,12 +188,29 @@ export default function Portfolio({ sections }: { sections: Section[] }) {
       hero.main.img,
       hero.glitch.img,
     ];
-    const everything = Promise.all([
+    const voices = sections.flatMap((section) =>
+      section.layout === "movie" ? section.items.map((item) => item.voice) : [],
+    );
+
+    const jobs = [
       ...images.map(preloadImage),
+      ...voices.map(preloadAudio),
       document.fonts.ready,
-      wait(500),
-    ]);
-    Promise.race([everything, wait(9000)]).then(startReveal);
+    ];
+    let done = 0;
+    const counted = jobs.map((job) =>
+      job.then(() => {
+        done += 1;
+        if (!cancelled) setProgress(done / jobs.length);
+      }),
+    );
+
+    const everything = Promise.all([...counted, wait(900)]);
+    Promise.race([everything, wait(LOAD_CEILING)]).then(() => {
+      if (cancelled) return;
+      setProgress(1);
+      startReveal();
+    });
 
     return () => {
       cancelled = true;
@@ -320,7 +349,7 @@ export default function Portfolio({ sections }: { sections: Section[] }) {
             />
           )}
 
-          {phase === "loading" && <div className={s.loader} />}
+          {phase === "loading" && <Loader progress={progress} />}
 
           {shots.map((shot) => (
             <div key={shot.id} className={s.shot} style={{ left: shot.x, top: shot.y }} />
